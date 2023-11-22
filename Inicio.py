@@ -8,6 +8,7 @@ def opcion2():
     if juego == 'N':
         numero = random.randint(1000, 9999)
         print(numero)
+
     else:
         palabra_ale = random.choice
         with open('palabras.dat', 'r', encoding='utf-8') as archivo:
