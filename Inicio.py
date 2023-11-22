@@ -7,7 +7,7 @@ def opcion2():
                       'caracteres (L). Escribe N o L: ')
     if juego == 'N':
         numero = random.randint(1000, 9999)
-
+        print(numero)
     else:
         palabra_ale = random.choice
         with open('palabras.dat', 'r', encoding='utf-8') as archivo:
