@@ -73,7 +73,7 @@ while not salir:
         print('\n\t\t\t\t\tOpción: 2\n')
         opcion2()
     elif opcion == 3:
-        print('\n\t\t\t\t\tOpción: 3\n')
+
         opcion3()
 
     elif opcion == 4:
