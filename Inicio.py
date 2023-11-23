@@ -45,6 +45,7 @@ def opcion2():
         palabragenerada = palabra_ale(palabras)
         print(palabragenerada)
 
+
 def opcion3():
     print('\t\t\t\t\033[1mAPLICACIÓN MASTERMIND\033[0m')
 
