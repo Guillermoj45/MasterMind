@@ -45,6 +45,13 @@ def opcion2():
         palabragenerada = palabra_ale(palabras)
         print(palabragenerada)
 
+def opcion3():
+    print('\t\t\t\t\033[1mAPLICACIÓN MASTERMIND\033[0m')
+
+    print('\t\tSe ha recuperado la combinación')
+    nombre = input('\t\tTu nickname, por favor: ')
+    print(f'\t\t¡Comienza el juego para {nombre}!')
+
 
 salir = False
 
@@ -66,6 +73,7 @@ while not salir:
         opcion2()
     elif opcion == 3:
         print('\n\t\t\t\t\tOpción: 3\n')
+        opcion3()
 
     elif opcion == 4:
         salir = True
