@@ -1,7 +1,6 @@
 import random
 import cv2
 
-
 def opcion1():
 
     img = cv2.imread('mastermind_logorigin.png')
