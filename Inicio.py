@@ -102,7 +102,9 @@ def opcion2():
     print("Mostrando la imagen con el texto oculto...")
     # Mostrar la imagen con el texto oculto
     mostrar_imagen("imagen_con_texto_oculto.png")
-
+    return palabragenerada, img_con_texto_oculto
+def opcion3():
+ print(palabragenerada)
 salir = False
 
 while not salir:
@@ -120,9 +122,11 @@ while not salir:
         opcion1()
     elif opcion == 2:
         print('\n\t\t\t\t\tOpción: 2\n')
-        opcion2()
+        valores = opcion2()
+        palabragenerada = valores[0]
+        img_con_texto_oculto = valores[1]
     elif opcion == 3:
         print('\n\t\t\t\t\tOpción: 3\n')
-
+        opcion3()
     elif opcion == 4:
         salir = True
