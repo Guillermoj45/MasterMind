@@ -77,42 +77,44 @@ def opcion3():
     print('\t\tSe ha recuperado la combinación')
     nombre = input('\t\tTu nickname, por favor: ')
     print(f'\t\t¡Comiza el juego para {nombre}!')
+    if juego == "N":
+        tipo = 4
+    else:
+        tipo = 7
+    print('\n\n\t\t\t\t\033[1mAPLICACIÓN MASTERMIND\033[0m')
+    print(f'\n\t\t\t\t ¡Tienes {tipo} intentos!')
+    print('\t\t\t\t     ¡Comenzamos!\n')
+    while cierre or vidas > tipo:
+        pista = []
+        numusuario = str(input('Introduce su número propuesto: '))
+        for a in range(len(numusuario)):
+            caracter = numusuario[a]
+            incogprin = palabragenerada[a]
+            esta = False
+            if caracter == incogprin:
+                pista.append("o")
+            else:
+                for incog in palabragenerada:
+                    if caracter == incog:
+                        esta = True
+                if esta:
+                    pista.append("-")
+                elif esta == False:
+                    pista.append("x")
+            """if esta:
+                print('SI ESTA', caracter)
+            elif noesta:
+                print('No esta ', caracter)"""
+        salida = ''.join(pista)
+        print(salida)
 
-    if 'N' == juego:
-        print('\n\n\t\t\t\t\033[1mAPLICACIÓN MASTERMIND\033[0m')
-        print('\n\t\t\t\t ¡Tienes 4 intentos!')
-        print('\t\t\t\t     ¡Comenzamos!\n')
-        while cierre or vidas > 4:
-            pista = []
-            numusuario = str(input('Introduce su número propuesto: '))
-            for a in range(len(numusuario)):
-                caracter = numusuario[a]
-                incogprin = palabragenerada[a]
-                esta = False
-                if caracter == incogprin:
-                    pista.append("o")
-                else:
-                    for incog in palabragenerada:
-                        if caracter == incog:
-                            esta = True
-                    if esta:
-                        pista.append("-")
-                    elif esta == False:
-                        pista.append("x")
-                """if esta:
-                    print('SI ESTA', caracter)
-                elif noesta:
-                    print('No esta ', caracter)"""
-            salida = ''.join(pista)
-            print(salida)
-
-            if salida == cerrando:
-                print("Combinación descubierta")
-                cierre = False
-            vidas += 1
-            if vidas > 4:
-                print("¡Has agotado los intentos!")
-
+        if salida == cerrando:
+            print("Combinación descubierta")
+            cierre = False
+        vidas += 1
+        if vidas > tipo:
+            print("¡Has agotado los intentos!")
+        input()
 
 salir = False
 
@@ -129,6 +131,7 @@ while not salir:
     if opcion == 1:
         print('\n\t\t\t\t\tOpción: 1\n')
         opcion1()
+
     elif opcion == 2:
         valores = opcion2()
         palabragenerada = valores[0]
@@ -137,5 +140,6 @@ while not salir:
     elif opcion == 3:
         print('\n\t\t\t\t\tOpción: 3\n')
         opcion3()
+
     elif opcion == 4:
         salir = True
