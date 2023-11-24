@@ -39,11 +39,11 @@ def mostrar():
     return palabramostra
 
 def opcion2():
-    juego = input('Escribe a qué modalidad de juego deseas jugar: secuencia de cinco números (N) o palabra de ocho'
-                  'caracteres (L). Escribe N o L: ')
+    juego = ()
     while juego != 'N' and juego != 'L':
         juego = input('Escribe a qué modalidad de juego deseas jugar: secuencia de cinco números (N) o palabra de ocho'
                       'caracteres (L). Escribe N o L: ')
+        juego = juego.upper()
     if juego == 'N':
         palabragenerada = str(random.randint(10000, 99999))
         print("Número generado:", palabragenerada)
@@ -68,7 +68,11 @@ def opcion2():
 def opcion3():
     pista = []
     cierre = True
-    cerrando = ()
+    cerrando = ""
+    vidas = 0
+    for a in range(len(palabragenerada)):
+        cerrando += "o"
+
     print('\t\t\t\t\033[1mAPLICACIÓN MASTERMIND\033[0m')
     print('\t\tSe ha recuperado la combinación')
     nombre = input('\t\tTu nickname, por favor: ')
@@ -78,7 +82,7 @@ def opcion3():
         print('\n\n\t\t\t\t\033[1mAPLICACIÓN MASTERMIND\033[0m')
         print('\n\t\t\t\t ¡Tienes 4 intentos!')
         print('\t\t\t\t     ¡Comenzamos!\n')
-        while cierre:
+        while cierre or vidas > 4:
             pista = []
             numusuario = str(input('Introduce su número propuesto: '))
             for a in range(len(numusuario)):
@@ -99,12 +103,15 @@ def opcion3():
                     print('SI ESTA', caracter)
                 elif noesta:
                     print('No esta ', caracter)"""
-            print(''.join(pista))
-            for a in range(len(palabragenerada)):
-                cerrando += "o"
-            if pista == cerrando:
+            salida = ''.join(pista)
+            print(salida)
+
+            if salida == cerrando:
                 print("Combinación descubierta")
                 cierre = False
+            vidas += 1
+            if vidas > 4:
+                print("¡Has agotado los intentos!")
 
 
 salir = False
