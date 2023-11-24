@@ -1,16 +1,10 @@
 import random
 import cv2
-<<<<<<< HEAD
-
-def opcion1():
-
-=======
 from stegano import lsb
 import numpy as np
 import pytesseract
 
 def opcion1():
->>>>>>> 9f9c677 (Programa principio)
     img = cv2.imread('mastermind_logorigin.png')
 
     texto = "Equipo 1"
@@ -35,91 +29,32 @@ def opcion1():
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
-<<<<<<< HEAD
-=======
-def ocultar_texto_en_imagen(img, texto):
-    # Convertir la imagen a formato RGB (stegano requiere RGB)
-    img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+def esconder(palabragenerada):
+    fotosecret = lsb.hide("mastermind_logorigin.png", palabragenerada)
+    fotosecret.save("Mastermind_secreto.png")
 
-    # Guardar la imagen temporalmente para ocultar el texto
-    temp_image_path = "temp_image.png"
-    cv2.imwrite(temp_image_path, img_rgb)
-
-    # Ocultar el texto en la imagen
-    img_con_texto_oculto = lsb.hide(temp_image_path, texto)
-    img_con_texto_oculto.save("imagen_con_texto_oculto.png")
-
-    # Eliminar la imagen temporal
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
-    return img_con_texto_oculto
-
-def mostrar_imagen(ruta_imagen):
-    # Leer la imagen y mostrarla
-    img = cv2.imread(ruta_imagen)
-    cv2.imshow("Imagen con Texto Oculto", img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
-
-def extraer_texto_de_imagen(ruta_imagen):
-    # Leer la imagen con texto oculto
-    img_con_texto_oculto = lsb.reveal(ruta_imagen)
-
-    # Convertir la imagen a formato NumPy array
-    img_con_texto_oculto = np.array(img_con_texto_oculto)
-
-    # Convertir la imagen a escala de grises
-    img_con_texto_oculto_gris = cv2.cvtColor(img_con_texto_oculto, cv2.COLOR_BGR2GRAY)
-
-    # Binarizar la imagen para obtener solo el texto oculto
-    _, binarizada = cv2.threshold(img_con_texto_oculto_gris, 128, 255, cv2.THRESH_BINARY)
-
-    # Mostrar la imagen binarizada
-    cv2.imshow("Texto Oculto", binarizada)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
-
-    # OCR (reconocimiento óptico de caracteres) para extraer el texto
-    texto_extraido = pytesseract.image_to_string(binarizada)
-
-    print("Texto Extraído:", texto_extraido)
-
->>>>>>> 9f9c677 (Programa principio)
+def mostrar():
+    palabramostra = lsb.reveal("Mastermind_secreto.png")
+    print(palabramostra)
+    return palabramostra
 
 def opcion2():
-    juego = input('Escribe a qué modalidad de juego deseas jugar: secuencia de cinco números (N) o palabra de ocho'
-                  'caracteres (L). Escribe N o L: ')
+    juego = ()
     while juego != 'N' and juego != 'L':
         juego = input('Escribe a qué modalidad de juego deseas jugar: secuencia de cinco números (N) o palabra de ocho'
                       'caracteres (L). Escribe N o L: ')
+        juego = juego.upper()
     if juego == 'N':
-<<<<<<< HEAD
-        numero = random.randint(1000, 9999)
-        print(numero)
-    else:
-        palabra_ale = random.choice
-        with open('palabras.dat', 'r', encoding='utf-8') as archivo:
-            palabras = [linea.strip() for linea in archivo]
-        palabragenerada = palabra_ale(palabras)
-        print(palabragenerada)
-
-
-def opcion3():
-    print('\t\t\t\t\033[1mAPLICACIÓN MASTERMIND\033[0m')
-
-    print('\t\tSe ha recuperado la combinación')
-    nombre = input('\t\tTu nickname, por favor: ')
-    print(f'\t\t¡Comienza el juego para {nombre}!')
-=======
-        palabragenerada = str(random.randint(1000, 9999))
+        palabragenerada = str(random.randint(10000, 99999))
         print("Número generado:", palabragenerada)
     else:
         with open('palabras.dat', 'r', encoding='utf-8') as archivo:
             palabras = [linea.strip() for linea in archivo]
         palabragenerada = random.choice(palabras)
         print("Palabra generada:", palabragenerada)
-
-    print("Ocultando el texto en la imagen...")
+    esconder(palabragenerada)
+    mostrar()
+    '''print("Ocultando el texto en la imagen...")
     # Cargar la imagen original
     img = cv2.imread('mastermind_logorigin.png')
 
@@ -128,27 +63,62 @@ def opcion3():
 
     print("Mostrando la imagen con el texto oculto...")
     # Mostrar la imagen con el texto oculto
-    mostrar_imagen("imagen_con_texto_oculto.png")
-    return palabragenerada, img_con_texto_oculto, juego
+    mostrar_imagen("imagen_con_texto_oculto.png")'''
+    return palabragenerada, juego
 def opcion3():
+    pista = []
+    cierre = True
+    cerrando = ""
+    vidas = 0
+    for a in range(len(palabragenerada)):
+        cerrando += "o"
+
     print('\t\t\t\t\033[1mAPLICACIÓN MASTERMIND\033[0m')
     print('\t\tSe ha recuperado la combinación')
     nombre = input('\t\tTu nickname, por favor: ')
-    print(f'\t\t¡Comienza el juego para {nombre}!')
+    print(f'\t\t¡Comiza el juego para {nombre}!')
+
     if 'N' == juego:
-        for intento in range (5):
->>>>>>> 9f9c677 (Programa principio)
+        print('\n\n\t\t\t\t\033[1mAPLICACIÓN MASTERMIND\033[0m')
+        print('\n\t\t\t\t ¡Tienes 4 intentos!')
+        print('\t\t\t\t     ¡Comenzamos!\n')
+        while cierre or vidas > 4:
+            pista = []
+            numusuario = str(input('Introduce su número propuesto: '))
+            for a in range(len(numusuario)):
+                caracter = numusuario[a]
+                incogprin = palabragenerada[a]
+                esta = False
+                if caracter == incogprin:
+                    pista.append("o")
+                else:
+                    for incog in palabragenerada:
+                        if caracter == incog:
+                            esta = True
+                    if esta:
+                        pista.append("-")
+                    elif esta == False:
+                        pista.append("x")
+                """if esta:
+                    print('SI ESTA', caracter)
+                elif noesta:
+                    print('No esta ', caracter)"""
+            salida = ''.join(pista)
+            print(salida)
+
+            if salida == cerrando:
+                print("Combinación descubierta")
+                cierre = False
+            vidas += 1
+            if vidas > 4:
+                print("¡Has agotado los intentos!")
 
 
 salir = False
 
 while not salir:
     print('\t\t\t\t\033[1mAPLICACIÓN MASTERMIND\033[0m')
-<<<<<<< HEAD
-    print('\t1) Cración del logo de equipo')
-=======
     print('\t1) Creación del logo de equipo')
->>>>>>> 9f9c677 (Programa principio)
     print('\t2) Generación y ocultado de la combinación')
     print('\t3) Juego Mastermind')
     print('\t4) Ranking de récords')
@@ -160,23 +130,12 @@ while not salir:
         print('\n\t\t\t\t\tOpción: 1\n')
         opcion1()
     elif opcion == 2:
-<<<<<<< HEAD
-        print('\n\t\t\t\t\tOpción: 2\n')
-        opcion2()
-    elif opcion == 3:
-
-        opcion3()
-
-    elif opcion == 4:
-        salir = True
-=======
         valores = opcion2()
         palabragenerada = valores[0]
-        juego = valores[3]
+        juego = valores[1]
 
     elif opcion == 3:
         print('\n\t\t\t\t\tOpción: 3\n')
         opcion3()
     elif opcion == 4:
         salir = True
->>>>>>> 9f9c677 (Programa principio)
