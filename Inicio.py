@@ -66,7 +66,9 @@ def opcion2():
     mostrar_imagen("imagen_con_texto_oculto.png")'''
     return palabragenerada, juego
 def opcion3():
-
+    pista = []
+    cierre = True
+    cerrando = ()
     print('\t\t\t\t\033[1mAPLICACIÓN MASTERMIND\033[0m')
     print('\t\tSe ha recuperado la combinación')
     nombre = input('\t\tTu nickname, por favor: ')
@@ -76,23 +78,34 @@ def opcion3():
         print('\n\n\t\t\t\t\033[1mAPLICACIÓN MASTERMIND\033[0m')
         print('\n\t\t\t\t ¡Tienes 4 intentos!')
         print('\t\t\t\t     ¡Comenzamos!\n')
-        numusuario = str(input('Introduce su número propuesto: '))
-        for caracter in numusuario:
-            esta = False
-            noesta = False
-            for incog in palabragenerada:
+        while cierre:
+            pista = []
+            numusuario = str(input('Introduce su número propuesto: '))
+            for a in range(len(numusuario)):
+                caracter = numusuario[a]
+                incogprin = palabragenerada[a]
+                esta = False
+                if caracter == incogprin:
+                    pista.append("o")
+                else:
+                    for incog in palabragenerada:
+                        if caracter == incog:
+                            esta = True
+                    if esta:
+                        pista.append("-")
+                    elif esta == False:
+                        pista.append("x")
+                """if esta:
+                    print('SI ESTA', caracter)
+                elif noesta:
+                    print('No esta ', caracter)"""
+            print(''.join(pista))
+            for a in range(len(palabragenerada)):
+                cerrando += "o"
+            if pista == cerrando:
+                print("Combinación descubierta")
+                cierre = False
 
-
-                if caracter == incog:
-                    esta = True
-                    break
-                elif caracter != incog:
-                    noesta = True
-                    break
-            if esta:
-                print('SI ESTA', caracter)
-            elif noesta:
-                print('No esta ', caracter)
 
 salir = False
 
