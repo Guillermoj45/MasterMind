@@ -3,6 +3,8 @@ import cv2
 from stegano import lsb
 import numpy as np
 import pytesseract
+import time
+import datetime
 
 def opcion1():
     img = cv2.imread('mastermind_logorigin.png')
@@ -65,11 +67,19 @@ def opcion2():
     # Mostrar la imagen con el texto oculto
     mostrar_imagen("imagen_con_texto_oculto.png")'''
     return palabragenerada, juego
+
+def guardar(fecha,repeticiones,combinacion, intentos, tiempo, conseguido):
+    print(hola)
+
 def opcion3():
     pista = []
+    conseguido = False
     cierre = True
     cerrando = ""
     vidas = 0
+    fecha = datetime.datetime.now()
+    fechacon = f"{fecha.day}/{fecha.month}/{fecha.year} {fecha.hour}:{fecha.minute}"
+
     for a in range(len(palabragenerada)):
         cerrando += "o"
 
@@ -84,6 +94,7 @@ def opcion3():
     print('\n\n\t\t\t\t\033[1mAPLICACIÓN MASTERMIND\033[0m')
     print(f'\n\t\t\t\t ¡Tienes {tipo} intentos!')
     print('\t\t\t\t     ¡Comenzamos!\n')
+    inicio = time.time()
     while cierre or vidas > tipo:
         pista = []
         numusuario = str(input('Introduce su número propuesto: '))
@@ -111,10 +122,15 @@ def opcion3():
         if salida == cerrando:
             print("Combinación descubierta")
             cierre = False
+            conseguido = True
         vidas += 1
         if vidas > tipo:
             print("¡Has agotado los intentos!")
+        final = time.time()
         input()
+
+    alltime = final - inicio
+    guardar(fecha,repeticiones,palabragenerada, vidas,alltime,conseguido)
 
 salir = False
 
