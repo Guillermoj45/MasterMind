@@ -29,53 +29,14 @@ def opcion1():
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
-def ocultar_texto_en_imagen(img, texto):
-    # Convertir la imagen a formato RGB (stegano requiere RGB)
-    img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+def esconder(palabragenerada):
+    fotosecret = lsb.hide("mastermind_logorigin.png", palabragenerada)
+    fotosecret.save("Mastermind_secreto.png")
 
-    # Guardar la imagen temporalmente para ocultar el texto
-    temp_image_path = "temp_image.png"
-    cv2.imwrite(temp_image_path, img_rgb)
-
-    # Ocultar el texto en la imagen
-    img_con_texto_oculto = lsb.hide(temp_image_path, texto)
-    img_con_texto_oculto.save("imagen_con_texto_oculto.png")
-
-    # Eliminar la imagen temporal
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
-    return img_con_texto_oculto
-
-def mostrar_imagen(ruta_imagen):
-    # Leer la imagen y mostrarla
-    img = cv2.imread(ruta_imagen)
-    cv2.imshow("Imagen con Texto Oculto", img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
-
-def extraer_texto_de_imagen(ruta_imagen):
-    # Leer la imagen con texto oculto
-    img_con_texto_oculto = lsb.reveal(ruta_imagen)
-
-    # Convertir la imagen a formato NumPy array
-    img_con_texto_oculto = np.array(img_con_texto_oculto)
-
-    # Convertir la imagen a escala de grises
-    img_con_texto_oculto_gris = cv2.cvtColor(img_con_texto_oculto, cv2.COLOR_BGR2GRAY)
-
-    # Binarizar la imagen para obtener solo el texto oculto
-    _, binarizada = cv2.threshold(img_con_texto_oculto_gris, 128, 255, cv2.THRESH_BINARY)
-
-    # Mostrar la imagen binarizada
-    cv2.imshow("Texto Oculto", binarizada)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
-
-    # OCR (reconocimiento óptico de caracteres) para extraer el texto
-    texto_extraido = pytesseract.image_to_string(binarizada)
-
-    print("Texto Extraído:", texto_extraido)
-
+def mostrar():
+    palabramostra = lsb.reveal("Mastermind_secreto.png")
+    print(palabramostra)
+    return palabramostra
 
 def opcion2():
     juego = input('Escribe a qué modalidad de juego deseas jugar: secuencia de cinco números (N) o palabra de ocho'
@@ -91,7 +52,8 @@ def opcion2():
             palabras = [linea.strip() for linea in archivo]
         palabragenerada = random.choice(palabras)
         print("Palabra generada:", palabragenerada)
-
+    esconder(palabragenerada)
+    mostrar()
     '''print("Ocultando el texto en la imagen...")
     # Cargar la imagen original
     img = cv2.imread('mastermind_logorigin.png')
@@ -131,8 +93,6 @@ def opcion3():
                 print('SI ESTA', caracter)
             elif noesta:
                 print('No esta ', caracter)
-
-
 
 salir = False
 
