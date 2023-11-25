@@ -110,14 +110,13 @@ def opcion3():
     conseguido = False
     cierre = True
     cerrando = ""
-    vidas = 0
+    repetir = "S"
+    repeticiones = 0
     fecha = datetime.datetime.now()
     fechacon = f"{fecha.day}/{fecha.month}/{fecha.year} {fecha.hour}:{fecha.minute}"
 
     for a in range(len(palabragenerada)):
         cerrando += "o"
-    repetir = "S"
-    repeticiones = 0
 
     print('\t\t\t\t\033[1mAPLICACIÓN MASTERMIND\033[0m')
     print('\t\tSe ha recuperado la combinación')
@@ -132,6 +131,7 @@ def opcion3():
     print('\t\t\t\t     ¡Comenzamos!\n')
     inicio = time.time()
     while repetir.upper() == "S":
+        vidas = 0
         while cierre or vidas > tipo:
             pista = []
             repeticiones += 1
