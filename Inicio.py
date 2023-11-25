@@ -75,10 +75,9 @@ def opcion2():
     return palabragenerada, juego
 
 
-def ranksave(fecha,repeticiones,combinacion, intentos, tiempo, conseguido, nombre):
+def ranksave(fecha,repeticiones,combinacion, intentos, tiempo, conseguido):
     partidas = []
-    dataplay = {"nombre": nombre,
-                "fecha" : fecha,
+    dataplay = {"fecha" : fecha,
                 "repeticiones" : repeticiones,
                 "combinacion" : combinacion,
                 "intentos" : intentos,
@@ -101,16 +100,10 @@ def ranksave(fecha,repeticiones,combinacion, intentos, tiempo, conseguido, nombr
             b = partidas[a]
             intentoslist = b.get("intentos")
             if intentos < intentoslist:
-                partidas.insert(a,dataplay)
-            elif intentos == intentoslist:
-                tiempolist = b.get("tiempo")
-                if tiempolist > tiempo:
-                    partidas.insert(a,dataplay)
-                else:
-                    partidas.append(dataplay)
+                partidas.into(dataplay, b)
             else:
                 partidas.append(dataplay)
-            del partidas[10:]
+                del partidas[10:]
     pickle.dump(partidas, ranking)
     ranking.close()
 
@@ -219,7 +212,7 @@ def opcion3(palabragenerada):
 
     alltime = final - inicio
     guardartxt(fechacon,repeticiones,palabragenerada, vidas,alltime,conseguido)
-    ranksave(fecha, repeticiones, palabragenerada, vidas, alltime, conseguido,nombre)
+    ranksave(fecha, repeticiones, palabragenerada, vidas, alltime, conseguido)
 
 
 salir = False
