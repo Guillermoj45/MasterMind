@@ -167,7 +167,7 @@ def opcion3(palabragenerada):
                     cierre = False
                     conseguido = True
                     print(f"¡En {vidas} intentos!")
-                elif vidas > tipo:
+                if vidas == tipo:
                     cierre = False
                     print("¡Has agotado los intentos!")
                 final = time.time()
