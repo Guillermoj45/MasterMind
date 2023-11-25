@@ -5,6 +5,7 @@ import numpy as np
 import pytesseract
 import time
 import datetime
+import pickle
 
 def opcion1():
     img = cv2.imread('mastermind_logorigin.png')
@@ -40,7 +41,7 @@ def mostrar():
     print(palabramostra)
     return palabramostra
 
-def ale(juego):
+def aleatorio(juego):
     if juego == 'N':
         palabragenerada = str(random.randint(10000, 99999))
         print("Número generado:", palabragenerada)
@@ -57,7 +58,7 @@ def opcion2():
         juego = input('Escribe a qué modalidad de juego deseas jugar: secuencia de cinco números (N) o palabra de ocho'
                       'caracteres (L). Escribe N o L: ')
         juego = juego.upper()
-    palabragenerada = ale(juego)
+    palabragenerada = aleatorio(juego)
 
     esconder(palabragenerada)
     mostrar()
@@ -73,7 +74,42 @@ def opcion2():
     mostrar_imagen("imagen_con_texto_oculto.png")'''
     return palabragenerada, juego
 
-def guardar(fecha,repeticiones,combinacion, intentos, tiempo, conseguido):
+
+def ranksave(fecha,repeticiones,combinacion, intentos, tiempo, conseguido):
+    partidas = []
+    dataplay = {"fecha" : fecha,
+                "repeticiones" : repeticiones,
+                "combinacion" : combinacion,
+                "intentos" : intentos,
+                "tiempo" : tiempo,
+                "conseguido" : conseguido}
+    try:
+        ranking = open("ranking.dat", "rb")
+        partidas = pickle.load(ranking)
+
+    except:
+        ranking = open("ranking.dat", "wb")
+
+    ranking.close()
+    ranking = open("ranking.dat", "wb")
+
+    if len(partidas) == 0:
+        partidas.append(dataplay)
+    else:
+        for a in range(len(partidas)):
+            b = partidas[a]
+            intentoslist = b.get("intentos")
+            if intentos < intentoslist:
+                partidas.into(dataplay, b)
+            else:
+                partidas.append(dataplay)
+                del partidas[10:]
+    pickle.dump(partidas, ranking)
+    ranking.close()
+
+
+
+def guardartxt(fecha,repeticiones,combinacion, intentos, tiempo, conseguido):
     try:
         registrotxt = open("partidas.txt","r")
         registro = registrotxt.read()
@@ -171,11 +207,13 @@ def opcion3(palabragenerada):
                     cierre = False
                     print("¡Has agotado los intentos!")
                 final = time.time()
-        palabragenerada = ale(juego)
+        palabragenerada = aleatorio(juego)
         repetir = input("¿Volvemos a jugar (S/N)? ")
 
     alltime = final - inicio
-    guardar(fechacon,repeticiones,palabragenerada, vidas,alltime,conseguido)
+    guardartxt(fechacon,repeticiones,palabragenerada, vidas,alltime,conseguido)
+    ranksave(fecha, repeticiones, palabragenerada, vidas, alltime, conseguido)
+
 
 salir = False
 
