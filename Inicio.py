@@ -40,20 +40,25 @@ def mostrar():
     print(palabramostra)
     return palabramostra
 
-def opcion2():
-    juego = ()
-    while juego != 'N' and juego != 'L':
-        juego = input('Escribe a qué modalidad de juego deseas jugar: secuencia de cinco números (N) o palabra de ocho'
-                      'caracteres (L). Escribe N o L: ')
-        juego = juego.upper()
+def ale(juego):
     if juego == 'N':
         palabragenerada = str(random.randint(10000, 99999))
         print("Número generado:", palabragenerada)
     else:
         with open('palabras.dat', 'r', encoding='utf-8') as archivo:
             palabras = [linea.strip() for linea in archivo]
-        palabragenerada = random.choice(palabras)
-        print("Palabra generada:", palabragenerada)
+            palabragenerada = random.choice(palabras)
+            print("Palabra generada:", palabragenerada)
+    return palabragenerada
+
+def opcion2():
+    juego = ()
+    while juego != 'N' and juego != 'L':
+        juego = input('Escribe a qué modalidad de juego deseas jugar: secuencia de cinco números (N) o palabra de ocho'
+                      'caracteres (L). Escribe N o L: ')
+        juego = juego.upper()
+    palabragenerada = ale(juego)
+
     esconder(palabragenerada)
     mostrar()
     '''print("Ocultando el texto en la imagen...")
@@ -76,7 +81,7 @@ def guardar(fecha,repeticiones,combinacion, intentos, tiempo, conseguido):
     except:
         pass
     registrotxt = open("partidas.txt","a+")
-    datos = (f"fecha y hora\tnúmero\tconbinacián\tintentos\ttiempo (secs)\t\tconseguido\n"
+    datos = (f"fecha y hora\t\tnúmero\tconbinacián\tintentos\ttiempo (secs)\t\tconseguido\n"
              f"{fecha}\t{repeticiones}\t{combinacion}\t\t{intentos}\t\t{tiempo}\t{conseguido}\n")
     registrotxt.write(datos)
     registrotxt.close()
@@ -105,10 +110,9 @@ def guardar(fecha,repeticiones,combinacion, intentos, tiempo, conseguido):
     registro.write(listrecods)
 """
 
-def opcion3():
+def opcion3(palabragenerada):
     pista = []
     conseguido = False
-    cierre = True
     cerrando = ""
     repetir = "S"
     repeticiones = 0
@@ -117,54 +121,57 @@ def opcion3():
 
     for a in range(len(palabragenerada)):
         cerrando += "o"
-
-    print('\t\t\t\t\033[1mAPLICACIÓN MASTERMIND\033[0m')
-    print('\t\tSe ha recuperado la combinación')
-    nombre = input('\t\tTu nickname, por favor: ')
-    print(f'\t\t¡Comiza el juego para {nombre}!')
     if juego == "N":
         tipo = 4
     else:
         tipo = 7
-    print('\n\n\t\t\t\t\033[1mAPLICACIÓN MASTERMIND\033[0m')
-    print(f'\n\t\t\t\t ¡Tienes {tipo} intentos!')
-    print('\t\t\t\t     ¡Comenzamos!\n')
-    inicio = time.time()
+    print('\t\t\t\t\033[1mAPLICACIÓN MASTERMIND\033[0m')
+    print('\t\tSe ha recuperado la combinación')
+    nombre = input('\t\tTu nickname, por favor: ')
+    print(f'\t\t¡Comiza el juego para {nombre}!')
     while repetir.upper() == "S":
-        vidas = 0
-        while cierre or vidas > tipo:
-            pista = []
-            repeticiones += 1
-            numusuario = str(input('Introduce su número propuesto: '))
-            for a in range(len(numusuario)):
-                caracter = numusuario[a]
-                incogprin = palabragenerada[a]
-                esta = False
-                if caracter == incogprin:
-                    pista.append("o")
-                else:
-                    for incog in palabragenerada:
-                        if caracter == incog:
-                            esta = True
-                    if esta:
-                        pista.append("-")
-                    elif esta == False:
-                        pista.append("x")
-                """if esta:
-                    print('SI ESTA', caracter)
-                elif noesta:
-                    print('No esta ', caracter)"""
-            salida = ''.join(pista)
-            print(salida)
+        print('\n\n\t\t\t\t\033[1mAPLICACIÓN MASTERMIND\033[0m')
+        print(f'\n\t\t\t\t ¡Tienes {tipo} intentos!')
+        print('\t\t\t\t     ¡Comenzamos!\n')
+        inicio = time.time()
 
-            if salida == cerrando:
-                print("Combinación descubierta")
-                cierre = False
-                conseguido = True
-            vidas += 1
-            if vidas > tipo:
-                print("¡Has agotado los intentos!")
-            final = time.time()
+        vidas = 0
+        cierre = True
+        repeticiones += 1
+        while cierre and vidas < tipo:
+            pista = []
+            numusuario = str(input('Introduce su número propuesto: '))
+            if len(numusuario) != len(palabragenerada):
+                print("!INTRODUZCA 5 NUMEROS¡")
+            else:
+                for a in range(len(numusuario)):
+                    caracter = numusuario[a]
+                    incogprin = palabragenerada[a]
+                    esta = False
+                    if caracter == incogprin:
+                        pista.append("o")
+                    else:
+                        for incog in palabragenerada:
+                            if caracter == incog:
+                                esta = True
+                        if esta:
+                            pista.append("-")
+                        elif esta == False:
+                            pista.append("x")
+
+                salida = ''.join(pista)
+                print(salida)
+                vidas += 1
+                if salida == cerrando:
+                    print("Combinación descubierta")
+                    cierre = False
+                    conseguido = True
+                    print(f"¡En {vidas} intentos!")
+                elif vidas > tipo:
+                    cierre = False
+                    print("¡Has agotado los intentos!")
+                final = time.time()
+        palabragenerada = ale(juego)
         repetir = input("¿Volvemos a jugar (S/N)? ")
 
     alltime = final - inicio
@@ -193,7 +200,7 @@ while not salir:
 
     elif opcion == 3:
         print('\n\t\t\t\t\tOpción: 3\n')
-        opcion3()
+        opcion3(palabragenerada)
 
     elif opcion == 4:
         salir = True
