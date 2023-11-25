@@ -132,7 +132,6 @@ def opcion3():
     print('\t\t\t\t     ¡Comenzamos!\n')
     inicio = time.time()
     while repetir.upper() == "S":
-        print("hola")
         while cierre or vidas > tipo:
             pista = []
             repeticiones += 1
