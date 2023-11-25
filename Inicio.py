@@ -7,6 +7,7 @@ import time
 import datetime
 import pickle
 
+
 def opcion1():
     img = cv2.imread('mastermind_logorigin.png')
 
@@ -32,14 +33,17 @@ def opcion1():
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
+
 def esconder(palabragenerada):
     fotosecret = lsb.hide("mastermind_logorigin.png", palabragenerada)
     fotosecret.save("Mastermind_secreto.png")
+
 
 def mostrar():
     palabramostra = lsb.reveal("Mastermind_secreto.png")
     print(palabramostra)
     return palabramostra
+
 
 def aleatorio(juego):
     if juego == 'N':
@@ -51,6 +55,7 @@ def aleatorio(juego):
             palabragenerada = random.choice(palabras)
             print("Palabra generada:", palabragenerada)
     return palabragenerada
+
 
 def opcion2():
     juego = ()
@@ -75,14 +80,14 @@ def opcion2():
     return palabragenerada, juego
 
 
-def ranksave(fecha,repeticiones,combinacion, intentos, tiempo, conseguido):
+def ranksave(fecha, repeticiones, combinacion, intentos, tiempo, conseguido):
     partidas = []
-    dataplay = {"fecha" : fecha,
-                "repeticiones" : repeticiones,
-                "combinacion" : combinacion,
-                "intentos" : intentos,
-                "tiempo" : tiempo,
-                "conseguido" : conseguido}
+    dataplay = {"fecha": fecha,
+                "repeticiones": repeticiones,
+                "combinacion": combinacion,
+                "intentos": intentos,
+                "tiempo": tiempo,
+                "conseguido": conseguido}
     try:
         ranking = open("ranking.dat", "rb")
         partidas = pickle.load(ranking)
@@ -108,15 +113,14 @@ def ranksave(fecha,repeticiones,combinacion, intentos, tiempo, conseguido):
     ranking.close()
 
 
-
-def guardartxt(fecha,repeticiones,combinacion, intentos, tiempo, conseguido):
+def guardartxt(fecha, repeticiones, combinacion, intentos, tiempo, conseguido):
     try:
-        registrotxt = open("partidas.txt","r")
+        registrotxt = open("partidas.txt", "r")
         registro = registrotxt.read()
         registrotxt.close()
     except:
         pass
-    registrotxt = open("partidas.txt","a+")
+    registrotxt = open("partidas.txt", "a+")
     datos = (f"fecha y hora\t\tnúmero\tconbinacián\tintentos\ttiempo (secs)\t\tconseguido\n"
              f"{fecha}\t{repeticiones}\t{combinacion}\t\t{intentos}\t\t{tiempo}\t{conseguido}\n")
     registrotxt.write(datos)
@@ -145,6 +149,7 @@ def guardartxt(fecha,repeticiones,combinacion, intentos, tiempo, conseguido):
 
     registro.write(listrecods)
 """
+
 
 def opcion3(palabragenerada):
     pista = []
@@ -211,7 +216,7 @@ def opcion3(palabragenerada):
         repetir = input("¿Volvemos a jugar (S/N)? ")
 
     alltime = final - inicio
-    guardartxt(fechacon,repeticiones,palabragenerada, vidas,alltime,conseguido)
+    guardartxt(fechacon, repeticiones, palabragenerada, vidas, alltime, conseguido)
     ranksave(fecha, repeticiones, palabragenerada, vidas, alltime, conseguido)
 
 
