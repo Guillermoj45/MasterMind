@@ -69,7 +69,29 @@ def opcion2():
     return palabragenerada, juego
 
 def guardar(fecha,repeticiones,combinacion, intentos, tiempo, conseguido):
-    print(hola)
+    try:
+        registro = open("registro", "r")
+        listrecods = registro.read()
+        registro.close()
+    except:
+        pass
+    personas = {"fecha": fecha,
+                "repeticiones": repeticiones,
+                "combinacion": combinacion,
+                "intentos": intentos,
+                "tiempo": tiempo,
+                "conseguido": conseguido}
+
+    for a in listrecods:
+        intentosdic = a.get(intentos)
+        if intentosdic < intentos:
+            listrecods.insert(a,'personas')
+            break
+    if len(listrecods) > 10:
+        listrecods.delete[10:]
+    registro = open("registro", "w")
+    registro.write(listrecods)
+
 
 def opcion3():
     pista = []
@@ -97,6 +119,7 @@ def opcion3():
     inicio = time.time()
     while cierre or vidas > tipo:
         pista = []
+        repeticiones += 1
         numusuario = str(input('Introduce su número propuesto: '))
         for a in range(len(numusuario)):
             caracter = numusuario[a]
