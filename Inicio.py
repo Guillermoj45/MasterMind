@@ -70,7 +70,19 @@ def opcion2():
 
 def guardar(fecha,repeticiones,combinacion, intentos, tiempo, conseguido):
     try:
-        registro = open("registro", "r")
+        registrotxt = open("partidas.txt","r")
+        registro = registrotxt.read()
+        registrotxt.close()
+    except:
+        pass
+    registrotxt = open("partidas.txt","a+")
+    datos = (f"fecha y hora\tnúmero\tconbinacián\tintentos\ttiempo (secs)\t\tconseguido\n"
+             f"{fecha}\t{repeticiones}\t{combinacion}\t\t{intentos}\t\t{tiempo}\t{conseguido}\n")
+    registrotxt.write(datos)
+    registrotxt.close()
+    """listrecods = []
+    try:
+        registro = open("partidas.txt", "r")
         listrecods = registro.read()
         registro.close()
     except:
@@ -89,9 +101,9 @@ def guardar(fecha,repeticiones,combinacion, intentos, tiempo, conseguido):
             break
     if len(listrecods) > 10:
         listrecods.delete[10:]
-    registro = open("registro", "w")
-    registro.write(listrecods)
 
+    registro.write(listrecods)
+"""
 
 def opcion3():
     pista = []
@@ -104,6 +116,8 @@ def opcion3():
 
     for a in range(len(palabragenerada)):
         cerrando += "o"
+    repetir = "S"
+    repeticiones = 0
 
     print('\t\t\t\t\033[1mAPLICACIÓN MASTERMIND\033[0m')
     print('\t\tSe ha recuperado la combinación')
@@ -117,43 +131,45 @@ def opcion3():
     print(f'\n\t\t\t\t ¡Tienes {tipo} intentos!')
     print('\t\t\t\t     ¡Comenzamos!\n')
     inicio = time.time()
-    while cierre or vidas > tipo:
-        pista = []
-        repeticiones += 1
-        numusuario = str(input('Introduce su número propuesto: '))
-        for a in range(len(numusuario)):
-            caracter = numusuario[a]
-            incogprin = palabragenerada[a]
-            esta = False
-            if caracter == incogprin:
-                pista.append("o")
-            else:
-                for incog in palabragenerada:
-                    if caracter == incog:
-                        esta = True
-                if esta:
-                    pista.append("-")
-                elif esta == False:
-                    pista.append("x")
-            """if esta:
-                print('SI ESTA', caracter)
-            elif noesta:
-                print('No esta ', caracter)"""
-        salida = ''.join(pista)
-        print(salida)
+    while repetir.upper() == "S":
+        print("hola")
+        while cierre or vidas > tipo:
+            pista = []
+            repeticiones += 1
+            numusuario = str(input('Introduce su número propuesto: '))
+            for a in range(len(numusuario)):
+                caracter = numusuario[a]
+                incogprin = palabragenerada[a]
+                esta = False
+                if caracter == incogprin:
+                    pista.append("o")
+                else:
+                    for incog in palabragenerada:
+                        if caracter == incog:
+                            esta = True
+                    if esta:
+                        pista.append("-")
+                    elif esta == False:
+                        pista.append("x")
+                """if esta:
+                    print('SI ESTA', caracter)
+                elif noesta:
+                    print('No esta ', caracter)"""
+            salida = ''.join(pista)
+            print(salida)
 
-        if salida == cerrando:
-            print("Combinación descubierta")
-            cierre = False
-            conseguido = True
-        vidas += 1
-        if vidas > tipo:
-            print("¡Has agotado los intentos!")
-        final = time.time()
-        input()
+            if salida == cerrando:
+                print("Combinación descubierta")
+                cierre = False
+                conseguido = True
+            vidas += 1
+            if vidas > tipo:
+                print("¡Has agotado los intentos!")
+            final = time.time()
+        repetir = input("¿Volvemos a jugar (S/N)? ")
 
     alltime = final - inicio
-    guardar(fecha,repeticiones,palabragenerada, vidas,alltime,conseguido)
+    guardar(fechacon,repeticiones,palabragenerada, vidas,alltime,conseguido)
 
 salir = False
 
