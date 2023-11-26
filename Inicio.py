@@ -64,19 +64,8 @@ def opcion2():
                       'caracteres (L). Escribe N o L: ')
         juego = juego.upper()
     palabragenerada = aleatorio(juego)
-
     esconder(palabragenerada)
     mostrar()
-    '''print("Ocultando el texto en la imagen...")
-    # Cargar la imagen original
-    img = cv2.imread('mastermind_logorigin.png')
-
-    # Ocultar el texto en la imagen y guardar la nueva imagen
-    img_con_texto_oculto = ocultar_texto_en_imagen(img, palabragenerada)
-
-    print("Mostrando la imagen con el texto oculto...")
-    # Mostrar la imagen con el texto oculto
-    mostrar_imagen("imagen_con_texto_oculto.png")'''
     return palabragenerada, juego
 
 
@@ -121,34 +110,14 @@ def guardartxt(fecha, repeticiones, combinacion, intentos, tiempo, conseguido):
     except:
         pass
     registrotxt = open("partidas.txt", "a+")
-    datos = (f"fecha y hora\t\tnúmero\tconbinacián\tintentos\ttiempo (secs)\t\tconseguido\n"
-             f"{fecha}\t{repeticiones}\t{combinacion}\t\t{intentos}\t\t{tiempo}\t{conseguido}\n")
+    datos = (f"|{fecha}|{repeticiones}|{combinacion}|{intentos}|{tiempo}|{conseguido}|\n")
+    '''datos = (f"fecha y hora\t\tnúmero\tconbinacián\tintentos\ttiempo (secs)\t\tconseguido\n"
+             f"{fecha}\t{repeticiones}\t{combinacion}\t\t{intentos}\t\t{tiempo}\t\t{conseguido}\n"
+             f"__________________________________________________________________________________")'''
     registrotxt.write(datos)
     registrotxt.close()
-    """listrecods = []
-    try:
-        registro = open("partidas.txt", "r")
-        listrecods = registro.read()
-        registro.close()
-    except:
-        pass
-    personas = {"fecha": fecha,
-                "repeticiones": repeticiones,
-                "combinacion": combinacion,
-                "intentos": intentos,
-                "tiempo": tiempo,
-                "conseguido": conseguido}
-
-    for a in listrecods:
-        intentosdic = a.get(intentos)
-        if intentosdic < intentos:
-            listrecods.insert(a,'personas')
-            break
-    if len(listrecods) > 10:
-        listrecods.delete[10:]
-
-    registro.write(listrecods)
-"""
+    registrotxt = open("partidas.txt", "r")
+    print(registrotxt.read())
 
 
 def opcion3(palabragenerada):
@@ -160,6 +129,11 @@ def opcion3(palabragenerada):
     fecha = datetime.datetime.now()
     fechacon = f"{fecha.day}/{fecha.month}/{fecha.year} {fecha.hour}:{fecha.minute}"
 
+    registrotxt= open('partidas.txt', 'w')
+    cabezal = ("|fecha_hora|número|conbinación|intentos|tiempo(secs)|conseguido|\n"
+               "|---|---|---|---|---|---|\n")
+    registrotxt.write(cabezal)
+    registrotxt.close()
     for a in range(len(palabragenerada)):
         cerrando += "o"
     if juego == "N":
@@ -213,10 +187,9 @@ def opcion3(palabragenerada):
                     print("¡Has agotado los intentos!")
                 final = time.time()
         palabragenerada = aleatorio(juego)
+        alltime = final - inicio
+        guardartxt(fechacon, repeticiones, palabragenerada, vidas, alltime, conseguido)
         repetir = input("¿Volvemos a jugar (S/N)? ")
-
-    alltime = final - inicio
-    guardartxt(fechacon, repeticiones, palabragenerada, vidas, alltime, conseguido)
     ranksave(fecha, repeticiones, palabragenerada, vidas, alltime, conseguido)
 
 
