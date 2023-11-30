@@ -97,7 +97,7 @@ def ranksave(fecha, repeticiones, combinacion, intentos, tiempo, conseguido):
                 partidas.into(dataplay, b)
             else:
                 partidas.append(dataplay)
-                del partidas[10:]
+    del partidas[10:]
     pickle.dump(partidas, ranking)
     ranking.close()
 
