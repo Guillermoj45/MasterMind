@@ -60,8 +60,8 @@ def aleatorio(juego):
 def opcion2():
     juego = ()
     while juego != 'N' and juego != 'L':
-        juego = input('\t\t\t\t\tEscribe a qué modalidad de juego deseas jugar: secuencia de cinco números (N) o palabra de ocho'
-                      'caracteres (L). Escribe N o L: ')
+        juego = input('\t\t\t\t\tEscribe a qué modalidad de juego deseas jugar: secuencia de cinco números (N) o'
+                      ' palabra de ocho caracteres (L). Escribe N o L: ')
         print()
         juego = juego.upper()
     palabragenerada = aleatorio(juego)
@@ -81,14 +81,15 @@ def opcion2():
     return palabragenerada, juego
 
 
-def ranksave(fecha, repeticiones, combinacion, intentos, tiempo, conseguido):
+def ranksave(fecha, repeticiones, combinacion, intentos, tiempo, conseguido, nombre):
     partidas = []
     dataplay = {"fecha": fecha,
                 "repeticiones": repeticiones,
                 "combinacion": combinacion,
                 "intentos": intentos,
                 "tiempo": tiempo,
-                "conseguido": conseguido}
+                "conseguido": conseguido,
+                "nombre": nombre}
     try:
         ranking = open("ranking.dat", "rb")
         partidas = pickle.load(ranking)
@@ -115,21 +116,26 @@ def ranksave(fecha, repeticiones, combinacion, intentos, tiempo, conseguido):
 
 
 def guardartxt(fecha, repeticiones, combinacion, intentos, tiempo, conseguido):
-    try:
-        registrotxt = open("partidas.txt", "r")
-        registro = registrotxt.read()
-        registrotxt.close()
-    except:
-        pass
+    partidas = list
     registrotxt = open("partidas.txt", "a+")
-    datos = (f"|{fecha}|{repeticiones}|{combinacion}|{intentos}|{tiempo}|{conseguido}|\n")
+    datos = (f"{fecha}#{repeticiones}#{combinacion}#{intentos}#{tiempo}#{conseguido}\n")
     '''datos = (f"fecha y hora\t\tnúmero\tconbinacián\tintentos\ttiempo (secs)\t\tconseguido\n"
              f"{fecha}\t{repeticiones}\t{combinacion}\t\t{intentos}\t\t{tiempo}\t\t{conseguido}\n"
              f"__________________________________________________________________________________")'''
     registrotxt.write(datos)
     registrotxt.close()
+
     registrotxt = open("partidas.txt", "r")
-    print(registrotxt.read())
+    registro = registrotxt.read()
+    partidas = registro.split("\n")
+    for a in range(len(partidas)):
+        partida = partidas[a]
+        datos = partida.split("#")
+
+    registrotxt.close()
+
+
+
 
 
 def opcion3(palabragenerada):
@@ -145,8 +151,10 @@ def opcion3(palabragenerada):
         cerrando += "o"
     if juego == "N":
         tipo = 4
+        menerror = "!INTRODUZCA 5 NUMEROS¡"
     else:
         tipo = 7
+        menerror = "!INTRODUZCA 8 LETRAS¡"
     print('\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\033[1mAPLICACIÓN MASTERMIND\033[0m')
     print('\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tSe ha recuperado la combinación')
     nombre = input('\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tTu nickname, por favor: ')
@@ -164,7 +172,7 @@ def opcion3(palabragenerada):
             pista = []
             numusuario = str(input('\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tIntroduce su combinación propuesta:   '))
             if len(numusuario) != len(palabragenerada):
-                print("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t!INTRODUZCA 5 NUMEROS U 8 LETRAS¡")
+                print(f"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t{menerror}")
             else:
                 for a in range(len(numusuario)):
                     caracter = numusuario[a]
@@ -183,7 +191,8 @@ def opcion3(palabragenerada):
 
                 salida = ''.join(pista)
                 print()
-                print(f'\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\033[4mPropuesto\033[0m\t\t\t\t\033[4mResultado\033[0m\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t{numusuario}\t\t\t\t\t{salida}\n\n\n')
+                print(f'\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\033[4mPropuesto\033[0m\t\t\t\t\033[4mResultado\033[0m'
+                      f'\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t{numusuario}\t\t\t\t\t{salida}\n\n\n')
                 vidas += 1
                 if salida == cerrando:
                     print("Combinación descubierta")
@@ -192,14 +201,16 @@ def opcion3(palabragenerada):
                     print(f"¡En {vidas} intentos!")
                 if vidas == tipo:
                     cierre = False
-                    print("\n\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t¡Has agotado los intentos!\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tCombinación no descubierta\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t",(palabragenerada))
+                    print("\n\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t¡Has agotado los intentos!"
+                          "\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tCombinación no descubierta"
+                          "\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t",(palabragenerada))
                 final = time.time()
         palabragenerada = aleatorio(juego)
+        alltime = final - inicio
+        guardartxt(fechacon, repeticiones, palabragenerada, vidas, alltime, conseguido)
         repetir = input("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t¿Volvemos a jugar (S/N)? ")
 
-    alltime = final - inicio
-    guardartxt(fechacon, repeticiones, palabragenerada, vidas, alltime, conseguido)
-    ranksave(fecha, repeticiones, palabragenerada, vidas, alltime, conseguido)
+    ranksave(fecha, repeticiones, palabragenerada, vidas, alltime, conseguido, nombre)
 
 
 salir = False
