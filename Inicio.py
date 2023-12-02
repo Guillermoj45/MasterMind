@@ -129,6 +129,9 @@ def guardartxt(fecha, repeticiones, combinacion, intentos, tiempo, conseguido):
     for a in range(len(partidas)):
         partida = partidas[a]
         datos = partida.split("#")
+        intentosmin = 999
+        if datos[3] <= intentosmin:
+            datos[3] = intentosmin
 
     registrotxt.close()
 
