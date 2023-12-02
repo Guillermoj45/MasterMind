@@ -112,17 +112,7 @@ def ranksave(nombre):
     ranking.close()
     ranking = open("ranking.dat", "wb")
     if conseguido == "True":
-        if len(partidas) == 0:
-            partidas.append(dataplay)
-        else:
-            for a in range(len(partidas)):
-                b = partidas[a]
-                intentoslist = b.get("intentos")
-                if intentosmin < intentoslist:
-                    partidas.into(dataplay, b)
-                else:
-                    partidas.append(dataplay)
-    del partidas[10:]
+        partidas.append(dataplay)
     pickle.dump(partidas, ranking)
     ranking.close()
 
@@ -223,10 +213,14 @@ def Rankins():
     pd.set_option('display.max_rows', None)  # Mostrar todas las filas
     pd.set_option('display.max_columns', None)  # Mostrar todas las columnas
     pd.set_option('display.width', None)  # Ancho de la visualización
-
+    tabla = tabla.sort_values(by=["intentos", "tiempo"])
     datosor = tabla[datos_orden]
+    datosor = datosor.head(10)
+
     print(datosor.to_string(index=False, col_space=10, justify='center'))
     input()
+
+def PDF():
 
 salir = False
 
