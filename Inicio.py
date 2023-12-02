@@ -154,7 +154,8 @@ def opcion3(palabragenerada):
         print(f'\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t ¡Tienes {tipo} intentos!')
         print('\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t     ¡Comenzamos!\n')
         inicio = time.time()
-
+        intentos = []
+        pistas = []
         vidas = 0
         cierre = True
         repeticiones += 1
@@ -180,9 +181,16 @@ def opcion3(palabragenerada):
                             pista.append("x")
 
                 salida = ''.join(pista)
+
+                intentos.append(numusuario)
+                pistas.append(salida)
                 print()
-                print(f'\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\033[4mPropuesto\033[0m\t\t\t\t\033[4mResultado\033[0m'
-                      f'\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t{numusuario}\t\t\t\t\t{salida}\n\n\n')
+                print(f'\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\033[4mPropuesto\033[0m\t\t\t\t\033[4mResultado\033[0m')
+                for a in range(len(intentos)):
+                    b = intentos[a]
+                    c = pistas[a]
+                    print(f"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t{b}\t\t\t\t\t{c}")
+
                 vidas += 1
                 if salida == cerrando:
                     print("Combinación descubierta")
@@ -193,7 +201,7 @@ def opcion3(palabragenerada):
                     cierre = False
                     print("\n\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t¡Has agotado los intentos!"
                           "\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tCombinación no descubierta"
-                          "\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t",(palabragenerada))
+                          "\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t", (palabragenerada))
                 final = time.time()
         palabragenerada = aleatorio(juego)
         alltime = final - inicio
@@ -221,6 +229,8 @@ def Rankins():
     input()
 
 def PDF():
+    pass
+
 
 salir = False
 
