@@ -116,7 +116,7 @@ def ranksave(fecha, repeticiones, combinacion, intentos, tiempo, conseguido, nom
 def guardartxt(fecha, repeticiones, combinacion, intentos, tiempo, conseguido):
     partidas = list
     registrotxt = open("partidas.txt", "a+")
-    datos = (f"{fecha}#{repeticiones}#{combinacion}#{intentos}#{tiempo}#{conseguido}\n")
+    datos = (f"\n{fecha}#{repeticiones}#{combinacion}#{intentos}#{tiempo}#{conseguido}")
     '''datos = (f"fecha y hora\t\tnúmero\tconbinacián\tintentos\ttiempo (secs)\t\tconseguido\n"
              f"{fecha}\t{repeticiones}\t{combinacion}\t\t{intentos}\t\t{tiempo}\t\t{conseguido}\n"
              f"__________________________________________________________________________________")'''
@@ -126,19 +126,30 @@ def guardartxt(fecha, repeticiones, combinacion, intentos, tiempo, conseguido):
     registrotxt = open("partidas.txt", "r")
     registro = registrotxt.read()
     partidas = registro.split("\n")
+    intentosmin = 999
     for a in range(len(partidas)):
-        partida = partidas[a]
-        datos = partida.split("#")
-        intentosmin = 999
-        if datos[3] <= intentosmin:
-            fecha = datos[0]
-            repeticiones = datos[1]
-            combinacion = datos[2]
-            intentosmin = datos[3]
-            tiempo = datos[4]
-            conseguido = datos[5]
+        if partidas[a] != "":
+            partida = partidas[a]
+            datos1 = partida.split("#")
+            datos1[3] = int(datos1[3])
+            datos1[4] = float(datos1[4])
+            if datos1[3] < intentosmin:
+                fecha = datos[0]
+                repeticiones = datos1[1]
+                combinacion = datos1[2]
+                intentosmin = datos1[3]
+                tiempomin = datos1[4]
+                conseguido = datos1[5]
+            elif datos1[3] == intentosmin and datos1[4] < tiempomin:
+                fecha = datos1[0]
+                repeticiones = datos1[1]
+                combinacion = datos1[2]
+                intentosmin = datos1[3]
+                tiempomin = datos1[4]
+                conseguido = datos1[5]
+
     registrotxt.close()
-    return fecha, repeticiones, combinacion, intentosmin, tiempo, conseguido
+    return fecha, repeticiones, combinacion, intentosmin, tiempomin, conseguido
 
 
 
