@@ -64,8 +64,8 @@ def opcion2():
         juego = juego.upper()
     palabragenerada = aleatorio(juego)
     esconder(palabragenerada)
-    palabrafoto = mostrar()
-    return palabrafoto, juego
+
+    return juego
 
 def ranksave(nombre):
     registrotxt = open("partidas.txt", "r")
@@ -126,7 +126,7 @@ def guardartxt(fecha, repeticiones, combinacion, intentos, tiempo, conseguido):
     registrotxt.write(datos)
     registrotxt.close()
 
-def opcion3(palabragenerada):
+def opcion3():
     f = open("partidas.txt", "w")
     f.close()
     pista = []
@@ -134,6 +134,7 @@ def opcion3(palabragenerada):
     cerrando = ""
     repetir = "S"
     repeticiones = 0
+    palabragenerada = mostrar()
     fecha = datetime.datetime.now()
     fechacon = f"{fecha.day}/{fecha.month}/{fecha.year} {fecha.hour}:{fecha.minute}"
 
@@ -193,17 +194,17 @@ def opcion3(palabragenerada):
 
                 vidas += 1
                 if salida == cerrando:
-                    print("Combinación descubierta")
+                    print("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tCombinación descubierta")
                     cierre = False
                     conseguido = True
-                    print(f"¡En {vidas} intentos!")
+                    print(f"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t¡En {vidas} intentos!")
                 if vidas == tipo:
                     cierre = False
                     print("\n\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t¡Has agotado los intentos!"
                           "\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tCombinación no descubierta"
                           "\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t", (palabragenerada))
                 final = time.time()
-        palabragenerada = aleatorio(juego)
+        palabragenerada = 2
         alltime = final - inicio
         guardartxt(fechacon, repeticiones, palabragenerada, vidas, alltime, conseguido)
         repetir = input("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t¿Volvemos a jugar (S/N)? ")
@@ -251,13 +252,11 @@ while not salir:
         opcion1()
 
     elif opcion == 2:
-        valores = opcion2()
-        palabragenerada = valores[0]
-        juego = valores[1]
+        juego = opcion2()
 
     elif opcion == 3:
         print('\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOpción: 3\n')
-        opcion3(palabragenerada)
+        opcion3()
 
     elif opcion == 4:
         Rankins()
