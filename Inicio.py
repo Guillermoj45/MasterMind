@@ -4,6 +4,7 @@ from stegano import lsb
 import time
 import datetime
 import pickle
+import pandas as pd
 
 
 def opcion1():
@@ -39,7 +40,6 @@ def esconder(palabragenerada):
 
 def mostrar():
     palabramostra = lsb.reveal("Mastermind_secreto.png")
-    print(palabramostra)
     return palabramostra
 
 
@@ -64,8 +64,8 @@ def opcion2():
         juego = juego.upper()
     palabragenerada = aleatorio(juego)
     esconder(palabragenerada)
-    mostrar()
-    return palabragenerada, juego
+    palabrafoto = mostrar()
+    return palabrafoto, juego
 
 def ranksave(nombre):
     registrotxt = open("partidas.txt", "r")
@@ -112,17 +112,17 @@ def ranksave(nombre):
 
     ranking.close()
     ranking = open("ranking.dat", "wb")
-
-    if len(partidas) == 0:
-        partidas.append(dataplay)
-    else:
-        for a in range(len(partidas)):
-            b = partidas[a]
-            intentoslist = b.get("intentos")
-            if intentosmin < intentoslist:
-                partidas.into(dataplay, b)
-            else:
-                partidas.append(dataplay)
+    if conseguido == "True":
+        if len(partidas) == 0:
+            partidas.append(dataplay)
+        else:
+            for a in range(len(partidas)):
+                b = partidas[a]
+                intentoslist = b.get("intentos")
+                if intentosmin < intentoslist:
+                    partidas.into(dataplay, b)
+                else:
+                    partidas.append(dataplay)
     del partidas[10:]
     pickle.dump(partidas, ranking)
     ranking.close()
@@ -138,6 +138,8 @@ def guardartxt(fecha, repeticiones, combinacion, intentos, tiempo, conseguido):
     registrotxt.close()
 
 def opcion3(palabragenerada):
+    f = open("partidas.txt", "w")
+    f.close()
     pista = []
     conseguido = False
     cerrando = ""
@@ -210,6 +212,23 @@ def opcion3(palabragenerada):
         repetir = input("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t¿Volvemos a jugar (S/N)? ")
     ranksave(nombre)
 
+def Rankins():
+    datos_orden = ["nombre", "intentos", "tiempo", "repeticiones", "combinacion", "fecha"]
+    archivo = open("ranking.dat", "rb")
+
+    ranking = pickle.load(archivo)
+    archivo.close()
+    tabla = pd.DataFrame(ranking)
+
+    # Configurar opciones para mostrar más filas y columnas
+    pd.set_option('display.max_rows', None)  # Mostrar todas las filas
+    pd.set_option('display.max_columns', None)  # Mostrar todas las columnas
+    pd.set_option('display.width', None)  # Ancho de la visualización
+
+    datosor = tabla[datos_orden]
+    print(datosor.to_string(index=False, col_space=10, justify='center'))
+    input()
+
 salir = False
 
 while not salir:
@@ -238,7 +257,7 @@ while not salir:
         opcion3(palabragenerada)
 
     elif opcion == 4:
-        pass
+        Rankins()
 
     elif opcion == 6:
         salir = True
