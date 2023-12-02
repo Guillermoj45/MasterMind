@@ -106,7 +106,6 @@ def ranksave(nombre):
     try:
         ranking = open("ranking.dat", "rb")
         partidas = pickle.load(ranking)
-        print(partidas)
     except:
         ranking = open("ranking.dat", "wb")
 
