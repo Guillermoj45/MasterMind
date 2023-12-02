@@ -1,8 +1,6 @@
 import random
 import cv2
 from stegano import lsb
-import numpy as np
-import pytesseract
 import time
 import datetime
 import pickle
