@@ -48,24 +48,36 @@ def mostrar():
 def aleatorio(juego):
     if juego == 'N':
         palabragenerada = str(random.randint(10000, 99999))
-        print("Número generado:", palabragenerada)
+        print("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tNúmero generado:", palabragenerada)
     else:
         with open('palabras.dat', 'r', encoding='utf-8') as archivo:
             palabras = [linea.strip() for linea in archivo]
             palabragenerada = random.choice(palabras)
-            print("Palabra generada:", palabragenerada)
+            print("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tPalabra generada:", palabragenerada)
     return palabragenerada
 
 
 def opcion2():
     juego = ()
     while juego != 'N' and juego != 'L':
-        juego = input('Escribe a qué modalidad de juego deseas jugar: secuencia de cinco números (N) o palabra de ocho'
+        juego = input('\t\t\t\t\tEscribe a qué modalidad de juego deseas jugar: secuencia de cinco números (N) o palabra de ocho'
                       'caracteres (L). Escribe N o L: ')
+        print()
         juego = juego.upper()
     palabragenerada = aleatorio(juego)
+
     esconder(palabragenerada)
     mostrar()
+    '''print("Ocultando el texto en la imagen...")
+    # Cargar la imagen original
+    img = cv2.imread('mastermind_logorigin.png')
+
+    # Ocultar el texto en la imagen y guardar la nueva imagen
+    img_con_texto_oculto = ocultar_texto_en_imagen(img, palabragenerada)
+
+    print("Mostrando la imagen con el texto oculto...")
+    # Mostrar la imagen con el texto oculto
+    mostrar_imagen("imagen_con_texto_oculto.png")'''
     return palabragenerada, juego
 
 
@@ -129,25 +141,20 @@ def opcion3(palabragenerada):
     fecha = datetime.datetime.now()
     fechacon = f"{fecha.day}/{fecha.month}/{fecha.year} {fecha.hour}:{fecha.minute}"
 
-    registrotxt= open('partidas.txt', 'w')
-    cabezal = ("|fecha_hora|número|conbinación|intentos|tiempo(secs)|conseguido|\n"
-               "|---|---|---|---|---|---|\n")
-    registrotxt.write(cabezal)
-    registrotxt.close()
     for a in range(len(palabragenerada)):
         cerrando += "o"
     if juego == "N":
         tipo = 4
     else:
         tipo = 7
-    print('\t\t\t\t\033[1mAPLICACIÓN MASTERMIND\033[0m')
-    print('\t\tSe ha recuperado la combinación')
-    nombre = input('\t\tTu nickname, por favor: ')
-    print(f'\t\t¡Comiza el juego para {nombre}!')
+    print('\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\033[1mAPLICACIÓN MASTERMIND\033[0m')
+    print('\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tSe ha recuperado la combinación')
+    nombre = input('\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tTu nickname, por favor: ')
+    print(f'\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t¡Comienza el juego para {nombre}!')
     while repetir.upper() == "S":
-        print('\n\n\t\t\t\t\033[1mAPLICACIÓN MASTERMIND\033[0m')
-        print(f'\n\t\t\t\t ¡Tienes {tipo} intentos!')
-        print('\t\t\t\t     ¡Comenzamos!\n')
+        print('\n\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\033[1mAPLICACIÓN MASTERMIND\033[0m')
+        print(f'\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t ¡Tienes {tipo} intentos!')
+        print('\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t     ¡Comenzamos!\n')
         inicio = time.time()
 
         vidas = 0
@@ -155,9 +162,9 @@ def opcion3(palabragenerada):
         repeticiones += 1
         while cierre and vidas < tipo:
             pista = []
-            numusuario = str(input('Introduce su número propuesto: '))
+            numusuario = str(input('\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tIntroduce su combinación propuesta:   '))
             if len(numusuario) != len(palabragenerada):
-                print("!INTRODUZCA 5 NUMEROS¡")
+                print("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t!INTRODUZCA 5 NUMEROS U 8 LETRAS¡")
             else:
                 for a in range(len(numusuario)):
                     caracter = numusuario[a]
@@ -175,7 +182,8 @@ def opcion3(palabragenerada):
                             pista.append("x")
 
                 salida = ''.join(pista)
-                print(salida)
+                print()
+                print(f'\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\033[4mPropuesto\033[0m\t\t\t\t\033[4mResultado\033[0m\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t{numusuario}\t\t\t\t\t{salida}\n\n\n')
                 vidas += 1
                 if salida == cerrando:
                     print("Combinación descubierta")
@@ -184,29 +192,32 @@ def opcion3(palabragenerada):
                     print(f"¡En {vidas} intentos!")
                 if vidas == tipo:
                     cierre = False
-                    print("¡Has agotado los intentos!")
+                    print("\n\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t¡Has agotado los intentos!\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tCombinación no descubierta\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t",(palabragenerada))
                 final = time.time()
         palabragenerada = aleatorio(juego)
-        alltime = final - inicio
-        guardartxt(fechacon, repeticiones, palabragenerada, vidas, alltime, conseguido)
-        repetir = input("¿Volvemos a jugar (S/N)? ")
+        repetir = input("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t¿Volvemos a jugar (S/N)? ")
+
+    alltime = final - inicio
+    guardartxt(fechacon, repeticiones, palabragenerada, vidas, alltime, conseguido)
     ranksave(fecha, repeticiones, palabragenerada, vidas, alltime, conseguido)
 
 
 salir = False
 
 while not salir:
-    print('\t\t\t\t\033[1mAPLICACIÓN MASTERMIND\033[0m')
-    print('\t1) Creación del logo de equipo')
-    print('\t2) Generación y ocultado de la combinación')
-    print('\t3) Juego Mastermind')
-    print('\t4) Ranking de récords')
-    print('\t5) Informe de las partidas (PDF)')
-    print('\t6) Salir')
-    opcion = int(input('\tOpción:__ '))
+    print('\n\n')
+    print('\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\033[1mAPLICACIÓN MASTERMIND\033[0m')
+    print('\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t1) Creación del logo de equipo')
+    print('\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t2) Generación y ocultado de la combinación')
+    print('\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t3) Juego Mastermind')
+    print('\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t4) Ranking de récords')
+    print('\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t5) Informe de las partidas (PDF)')
+    print('\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t6) Salir')
+    opcion = int(input('\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOpción:__ '))
+    print()
 
     if opcion == 1:
-        print('\n\t\t\t\t\tOpción: 1\n')
+        print('\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOpción: 1\n')
         opcion1()
 
     elif opcion == 2:
@@ -215,7 +226,7 @@ while not salir:
         juego = valores[1]
 
     elif opcion == 3:
-        print('\n\t\t\t\t\tOpción: 3\n')
+        print('\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOpción: 3\n')
         opcion3(palabragenerada)
 
     elif opcion == 4:
