@@ -137,8 +137,9 @@ def guardartxt(fecha, repeticiones, combinacion, intentos, tiempo, conseguido):
             intentosmin = datos[3]
             tiempo = datos[4]
             conseguido = datos[5]
-    return fecha, repeticiones, combinacion, intentosmin, tiempo, conseguido
     registrotxt.close()
+    return fecha, repeticiones, combinacion, intentosmin, tiempo, conseguido
+
 
 
 
