@@ -9,11 +9,11 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from reportlab.lib import utils, colors
 from reportlab.lib.styles import getSampleStyleSheet
-
 import itertools
 from random import randint
 from statistics import mean
 from reportlab.lib.pagesizes import A4
+
 
 def opcion1():
     img = cv2.imread('mastermind_logorigin.png')
@@ -259,7 +259,7 @@ def export_to_pdf(data):
     # Space between rows.
     padding = 15
 
-    xlist = [x + x_offset for x in [0, 200, 250, 300, 350, 400, 480]]
+    xlist = [x + x_offset for x in [0, 100, 150, 230, 310, 390, 480]]
     ylist = [h - y_offset - i * padding for i in range(max_rows_per_page + 1)]
 
     for rows in grouper(data, max_rows_per_page):
@@ -273,13 +273,20 @@ def export_to_pdf(data):
     c.save()
 
 
-data = [("NOMBRE", "NOTA 1", "NOTA 2", "NOTA 3", "PROM.", "ESTADO")]
-for i in range(1, 101):
+data = [("Fecha_hora", "Número", "Conbinación", "Intentos", "Tiempo(secs)", "Conseguido")]
+for i in range(1, 120):
     exams = [randint(0, 10) for _ in range(3)]
     avg = round(mean(exams), 2)
     state = "Aprobado" if avg >= 4 else "Desaprobado"
-    data.append((f"Alumno {i}", *exams, avg, state))
+    data.append((f"Alumno {i}", * exams, avg, state))
 export_to_pdf(data)
+
+def sacar_datos_txt():
+    archivo = open("partidas.txt", "r")
+    registro = archivo.read()
+    partidas = registro.split("\n")
+    for a in range(len(partidas)):
+
 
 def PDF():
     c = canvas.Canvas("partidas.pdf", pagesize=letter)
@@ -300,7 +307,6 @@ def PDF():
     c.drawString(180, 550, "INFORMES DE LAS PARTIDA")
     c.setFont("Helvetica", 12)
     c.drawString(60, 530, f"El jugador pedro ha jugado las siguientes partidas")
-
 
     # Guardar el PDF
     c.save()
