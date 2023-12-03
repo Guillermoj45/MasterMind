@@ -72,7 +72,7 @@ def opcion2():
 
     return juego
 
-def ranksave(nombre):
+def la_mejor_txt():
     registrotxt = open("partidas.txt", "r")
     registro = registrotxt.read()
     partidas = registro.split("\n")
@@ -98,6 +98,11 @@ def ranksave(nombre):
                 tiempomin = datos1[4]
                 conseguido = datos1[5]
     registrotxt.close()
+    return fecha, repeticiones, combinacion, intentosmin, tiempomin, conseguido
+
+
+def ranksave(nombre):
+    fecha, repeticiones, combinacion, intentosmin, tiempomin, conseguido = la_mejor_txt()
 
     partidas = []
     dataplay = {"fecha": fecha,
@@ -213,6 +218,7 @@ def opcion3():
         guardartxt(fechacon, repeticiones, palabragenerada, vidas, alltime, conseguido)
         repetir = input("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t¿Volvemos a jugar (S/N)? ")
     ranksave(nombre)
+    return nombre
 
 def Rankins():
     datos_orden = ["nombre", "intentos", "tiempo", "repeticiones", "combinacion", "fecha"]
@@ -230,6 +236,7 @@ def Rankins():
     datosor = tabla[datos_orden]
     datosor = datosor.head(10)
     datosor.rename(columns={'fecha': 'fecha y hora'}, inplace=True)
+
     print(datosor.to_string(index=False, col_space=10, justify='center'))
 
 
@@ -238,7 +245,6 @@ def PDF():
 
     # Cargar la imagen y obtener sus dimensiones
     img = utils.ImageReader("fotoconlogo.png")
-    img_width, img_height = img.getSize()
 
     # Escalar la imagen según las dimensiones proporcionadas
     c.drawImage(img, 160, 580, 300, 180)
@@ -251,7 +257,8 @@ def PDF():
     c.rect(50, 545, 500, 25, fill=True)
     c.setFillColor(colors.black)
     c.drawString(180, 550, "INFORMES DE LAS PARTIDA")
-    c.drawString(f"El jugador {nombre} ha jugado las siguientes partidas")
+    c.setFont("Helvetica", 12)
+    c.drawString(60, 530, f"El jugador pedro ha jugado las siguientes partidas")
 
     # Guardar el PDF
     c.save()
@@ -282,7 +289,7 @@ while not salir:
 
     elif opcion == 3:
         print(f'\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOpción: {opcion}\n')
-        opcion3()
+        nombre = opcion3()
         input()
 
     elif opcion == 4:
@@ -292,5 +299,6 @@ while not salir:
 
     elif opcion == 5:
         PDF()
+
     elif opcion == 6:
         salir = True
