@@ -5,6 +5,9 @@ import time
 import datetime
 import pickle
 import pandas as pd
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter
+from reportlab.lib import utils
 
 
 def opcion1():
@@ -30,6 +33,7 @@ def opcion1():
 
     cv2.imshow("Imagen con Texto", img)
     cv2.waitKey(0)
+    cv2.imwrite("fotoconlogo.png", img)
     cv2.destroyAllWindows()
 
 
@@ -229,8 +233,19 @@ def Rankins():
     print(datosor.to_string(index=False, col_space=10, justify='center'))
 
 
-def PDF():
-    pass
+def PDF():"""
+    c = canvas.Canvas("partidas.pdf", pagesize=letter)
+
+    # Cargar la imagen y obtener sus dimensiones
+    img = utils.ImageReader("fotoconlogo.png")
+    img_width, img_height = img.getSize()
+
+    # Escalar la imagen según las dimensiones proporcionadas
+    aspect_ratio = img_height / float(img_width)
+    c.drawImage(img, 100, 100, 300, 50)
+
+    # Guardar el PDF
+    c.save()"""
 
 
 salir = False
@@ -266,5 +281,7 @@ while not salir:
         Rankins()
         input()
 
+    elif opcion == 5:
+        PDF()
     elif opcion == 6:
         salir = True
