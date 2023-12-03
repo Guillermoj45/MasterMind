@@ -344,9 +344,9 @@ def PDF():
     c.drawString(60, 530, f"El jugador pedro ha jugado las siguientes partidas")
     # Guardar el PDF
     fecha, repeticiones, combinacion, intentosmin, tiempomin, conseguido = la_mejor_txt()
-    c.drawString(60, 510,'Su mejor partida ha sido: \n')
+    c.drawString(60, 510,'Su mejor partida ha sido:')
     c.drawString(60, 495, f"{fecha} --- {repeticiones} --- {combinacion} --- {intentosmin} --- {tiempomin} --- {'True' if conseguido else 'False'}")
-
+    c.drawString(60, 480, f'Actualmente NOMBRE ocupraía la POSICION de nuestro ranking')
     c.save()
 
 
