@@ -248,17 +248,19 @@ while not salir:
     print()
 
     if opcion == 1:
-        print('\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOpción: 1\n')
+        print(f'\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOpción: {opcion}\n')
         opcion1()
 
     elif opcion == 2:
+        print(f'\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOpción: {opcion}\n')
         juego = opcion2()
 
     elif opcion == 3:
-        print('\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOpción: 3\n')
+        print(f'\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOpción: {opcion}\n')
         opcion3()
 
     elif opcion == 4:
+        print(f'\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOpción: {opcion}\n')
         Rankins()
 
     elif opcion == 6:
