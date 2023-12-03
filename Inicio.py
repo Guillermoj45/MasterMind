@@ -136,11 +136,20 @@ def ranksave(nombre):
                 b = partidas[a]
                 intentoslist = b.get("intentos")
                 if intentos < intentoslist:
-                    partidas.into(dataplay, b)
+                    partidas.insert(a, dataplay)
                     break
+                elif intentosmin == intentoslist:
+                    tiempolis = b.get("tiempo")
+                    if tiempolis > tiempomin:
+                        partidas.insert(a, dataplay)
+                        break
+                    elif len(partidas) < 10:
+                        partidas.append(dataplay)
+                        break
                 else:
                     partidas.append(dataplay)
                     break
+
     del partidas[10:]
     pickle.dump(partidas, ranking)
     ranking.close()
