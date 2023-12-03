@@ -225,9 +225,9 @@ def Rankins():
     tabla = tabla.sort_values(by=["intentos", "tiempo"])
     datosor = tabla[datos_orden]
     datosor = datosor.head(10)
-
+    datosor.rename(columns={'fecha': 'fecha y hora'}, inplace=True)
     print(datosor.to_string(index=False, col_space=10, justify='center'))
-    input()
+
 
 def PDF():
     pass
@@ -254,14 +254,17 @@ while not salir:
     elif opcion == 2:
         print(f'\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOpción: {opcion}\n')
         juego = opcion2()
+        input()
 
     elif opcion == 3:
         print(f'\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOpción: {opcion}\n')
         opcion3()
+        input()
 
     elif opcion == 4:
         print(f'\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOpción: {opcion}\n')
         Rankins()
+        input()
 
     elif opcion == 6:
         salir = True
