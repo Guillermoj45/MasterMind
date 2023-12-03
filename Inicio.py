@@ -127,8 +127,21 @@ def ranksave(nombre):
 
     ranking.close()
     ranking = open("ranking.dat", "wb")
+    intentos = 90
     if conseguido == "True":
-        partidas.append(dataplay)
+        if len(partidas) == 0:
+            partidas.append(dataplay)
+        else:
+            for a in range(len(partidas)):
+                b = partidas[a]
+                intentoslist = b.get("intentos")
+                if intentos < intentoslist:
+                    partidas.into(dataplay, b)
+                    break
+                else:
+                    partidas.append(dataplay)
+                    break
+    del partidas[10:]
     pickle.dump(partidas, ranking)
     ranking.close()
 
@@ -272,6 +285,19 @@ def sacar_datos_txt():
             conseguido.append(datos1[5])
     return fecha, repeticiones, combinacion, intentos, tiempo, conseguido
 
+def posicion (timeuser, combinacionuser, fechauser, intetosuser, nombreuser):
+    archivo = open("ranking.dat", "rb")
+    registro = pickle.load(archivo)
+    archivo.close()
+    for a in range(len(registro)):
+        b = registro[a]
+        combinacion = b.get("combinacion")
+        tiempo = b.get("tiempo")
+        fecha = b.get("fecha")
+        intentos = b.get("intentos")
+        nombre = b.get("nombre")
+        if tiempo == timeuser and combinacion == combinacionuser and fecha == fechauser and intentos == intetosuser and nombre == nombreuser:
+            return a+1
 
 def PDF():
     c = canvas.Canvas("partidas.pdf", pagesize=letter)
@@ -329,7 +355,8 @@ def PDF():
     fecha, repeticiones, combinacion, intentosmin, tiempomin, conseguido = la_mejor_txt()
     c.drawString(60, 310, 'Su mejor partida ha sido:')
     c.drawString(60, 295, f"{fecha} --- {repeticiones} --- {combinacion} --- {intentosmin} --- {tiempomin} --- {'True' if conseguido else 'False'}")
-    c.drawString(60, 280, f'Actualmente NOMBRE ocupraía la POSICION de nuestro ranking')
+    posicion1 = posicion(tiempomin, combinacion, fecha, intentosmin, nombre)
+    c.drawString(60, 280, f'Actualmente {nombre} ocupraía la {posicion1} de nuestro ranking')
     c.save()
 
 
