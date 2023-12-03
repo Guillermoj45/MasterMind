@@ -308,12 +308,12 @@ def PDF():
 
     # Agregar encabezados
     headers = ["Fecha", "Repeticiones", "Combinación", "Intentos", "Tiempo(secs)", "Conseguido"]
+
     for x, header in zip(xlist, headers):
         c.drawString(x + 2, ylist[0] - separacion + 3, header)
 
     # Incrementar el índice de y para comenzar con los datos
     y_index = 1
-
     for row in zip(fecha, repeticiones, combinaciones, intentos, tiempo, conseguido):
         c.grid(xlist, ylist[:2])
         for x, cell in zip(xlist, row):
