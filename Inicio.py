@@ -7,7 +7,8 @@ import pickle
 import pandas as pd
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
-from reportlab.lib import utils
+from reportlab.lib import utils, colors
+from reportlab.lib.styles import getSampleStyleSheet
 
 
 def opcion1():
@@ -96,7 +97,6 @@ def ranksave(nombre):
                 intentosmin = datos1[3]
                 tiempomin = datos1[4]
                 conseguido = datos1[5]
-
     registrotxt.close()
 
     partidas = []
@@ -233,7 +233,7 @@ def Rankins():
     print(datosor.to_string(index=False, col_space=10, justify='center'))
 
 
-def PDF():"""
+def PDF():
     c = canvas.Canvas("partidas.pdf", pagesize=letter)
 
     # Cargar la imagen y obtener sus dimensiones
@@ -241,11 +241,20 @@ def PDF():"""
     img_width, img_height = img.getSize()
 
     # Escalar la imagen según las dimensiones proporcionadas
-    aspect_ratio = img_height / float(img_width)
-    c.drawImage(img, 100, 100, 300, 50)
+    c.drawImage(img, 160, 580, 300, 180)
+    primer = getSampleStyleSheet()
+    negrita = primer['BodyText']
+    negrita.fontName = "Helvetica-Bold"
+    negrita.fontSize = 20
+    c.setFont(negrita.fontName, negrita.fontSize)
+    c.setFillColor(colors.lightgrey)
+    c.rect(50, 545, 500, 25, fill=True)
+    c.setFillColor(colors.black)
+    c.drawString(180, 550, "INFORMES DE LAS PARTIDA")
+    c.drawString(f"El jugador {nombre} ha jugado las siguientes partidas")
 
     # Guardar el PDF
-    c.save()"""
+    c.save()
 
 
 salir = False
