@@ -6,13 +6,15 @@ import datetime
 import pickle
 import pandas as pd
 from reportlab.pdfgen import canvas
-from reportlab.lib.pagesizes import letter
 from reportlab.lib import utils, colors
 from reportlab.lib.styles import getSampleStyleSheet
 import itertools
 from random import randint
 from statistics import mean
 from reportlab.lib.pagesizes import A4
+from reportlab.lib import colors
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 
 
 def opcion1():
@@ -284,9 +286,28 @@ export_to_pdf(data)
 def sacar_datos_txt():
     archivo = open("partidas.txt", "r")
     registro = archivo.read()
+    archivo.close()
+    fecha = []
+    repeticiones = []
+    combinacion = []
+    intentos = []
+    tiempo = []
+    conseguido = []
     partidas = registro.split("\n")
     for a in range(len(partidas)):
-
+        if partidas[a] != "":
+            partida = partidas[a]
+            datos1 = partida.split("#")
+            datos1[3] = int(datos1[3])
+            datos1[4] = float(datos1[4])
+            fecha.append(datos1[0])
+            repeticiones.append(datos1[1])
+            combinacion.append(datos1[2])
+            intentos.append(datos1[3])
+            tiempo.append(datos1[4])
+            conseguido.append(datos1[5])
+    print(f"{fecha}\n{repeticiones}\n{combinacion}\n{intentos}\n{tiempo}\n{conseguido}")
+    return fecha, repeticiones, combinacion, intentos, tiempo, conseguido
 
 def PDF():
     c = canvas.Canvas("partidas.pdf", pagesize=letter)
@@ -307,7 +328,18 @@ def PDF():
     c.drawString(180, 550, "INFORMES DE LAS PARTIDA")
     c.setFont("Helvetica", 12)
     c.drawString(60, 530, f"El jugador pedro ha jugado las siguientes partidas")
-
+    fecha, repeticiones, combinaciones, intentos, tiempo, conseguido = sacar_datos_txt()
+    data = [fecha, repeticiones, combinaciones, intentos, tiempo, conseguido]
+    tabla = Table(data)
+    style = TableStyle([('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+                        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+                        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+                        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+                        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+                        ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+                        ('GRID', (0, 0), (-1, -1), 1, colors.black)])
+    tabla.setStyle(style)
+    c.drawTable(tabla, 60, 480)
     # Guardar el PDF
     c.save()
 
@@ -350,4 +382,4 @@ while not salir:
         PDF()
 
     elif opcion == 6:
-        export_to_pdf(data)
+        print(sacar_datos_txt())
