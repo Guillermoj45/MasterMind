@@ -246,43 +246,6 @@ def Rankins():
     print(datosor.to_string(index=False, col_space=10, justify='center'))
 
 
-def grouper(iterable, n):
-    args = [iter(iterable)] * n
-    return itertools.zip_longest(*args)
-
-
-def export_to_pdf(data):
-    c = canvas.Canvas("grilla-alumnos.pdf", pagesize=A4)
-    w, h = A4
-    max_rows_per_page = 45
-    # Margin.
-    x_offset = 50
-    y_offset = 50
-    # Space between rows.
-    padding = 15
-
-    xlist = [x + x_offset for x in [0, 100, 150, 230, 310, 390, 480]]
-    ylist = [h - y_offset - i * padding for i in range(max_rows_per_page + 1)]
-
-    for rows in grouper(data, max_rows_per_page):
-        rows = tuple(filter(bool, rows))
-        c.grid(xlist, ylist[:len(rows) + 1])
-        for y, row in zip(ylist[:-1], rows):
-            for x, cell in zip(xlist, row):
-                c.drawString(x + 2, y - padding + 3, str(cell))
-        c.showPage()
-
-    c.save()
-
-
-data = [("Fecha_hora", "Número", "Conbinación", "Intentos", "Tiempo(secs)", "Conseguido")]
-for i in range(1, 120):
-    exams = [randint(0, 10) for _ in range(3)]
-    avg = round(mean(exams), 2)
-    state = "Aprobado" if avg >= 4 else "Desaprobado"
-    data.append((f"Alumno {i}", * exams, avg, state))
-export_to_pdf(data)
-
 def sacar_datos_txt():
     archivo = open("partidas.txt", "r")
     registro = archivo.read()
@@ -308,6 +271,57 @@ def sacar_datos_txt():
             conseguido.append(datos1[5])
     print(f"{fecha}\n{repeticiones}\n{combinacion}\n{intentos}\n{tiempo}\n{conseguido}")
     return fecha, repeticiones, combinacion, intentos, tiempo, conseguido
+
+def grouper(iterable, n):
+    args = [iter(iterable)] * n
+    return itertools.zip_longest(*args)
+
+
+def export_to_pdf(data):
+    c = canvas.Canvas("grilla-alumnos.pdf", pagesize=A4)
+    w, h = A4
+    max_rows_per_page = 45
+    # Margin.
+    x_offset = 50
+    y_offset = 50
+    # Space between rows.
+    padding = 15
+    fecha, repeticiones, combinaciones, intentos, tiempo, conseguido = data
+    xlist = [x + x_offset for x in [0, 100, 180, 250, 310, 400, 480]]
+    ylist = [h - y_offset - i * padding for i in range(max_rows_per_page + 1)]
+
+    # Agregar encabezados
+    headers = ["Fecha", "Repeticiones", "Combinación", "Intentos", "Tiempo", "Conseguido"]
+    for x, header in zip(xlist, headers):
+        c.drawString(x + 2, ylist[0] - padding + 3, header)
+
+    # Incrementar el índice de y para comenzar con los datos
+    y_index = 1
+
+    for row in zip(fecha, repeticiones, combinaciones, intentos, tiempo, conseguido):
+        c.grid(xlist, ylist[:2])
+        for x, cell in zip(xlist, row):
+            c.drawString(x + 2, ylist[y_index] - padding + 3, str(cell))
+        y_index += 1
+
+        # Si alcanza el límite de filas por página, mostrar la siguiente página
+        if y_index == max_rows_per_page:
+            c.showPage()
+            y_index = 0
+
+    # Guardar el PDF
+    c.save()
+
+
+
+data = [("Fecha_hora", "Número", "Conbinación", "Intentos", "Tiempo(secs)", "Conseguido")]
+for i in range(1, 120):
+    exams = [randint(0, 10) for _ in range(3)]
+    avg = round(mean(exams), 2)
+    state = "Aprobado" if avg >= 4 else "Desaprobado"
+    data.append((f"Alumno {i}", * exams, avg, state))
+data = sacar_datos_txt()
+export_to_pdf(data)
 
 def PDF():
     c = canvas.Canvas("partidas.pdf", pagesize=letter)
