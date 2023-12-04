@@ -65,13 +65,11 @@ def aleatorio(juego):
     if juego == 'N':
         # Si el juego es de números, genera un número aleatorio de 5 dígitos
         palabragenerada = str(random.randint(10000, 99999))
-        print("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tNúmero generado:", palabragenerada)
     else:
         # Si el juego es de palabras, lee las palabras desde el archivo 'palabras.dat' y elige una al azar
         with open('palabras.dat', 'r', encoding='utf-8') as archivo:
             palabras = [linea.strip() for linea in archivo]
             palabragenerada = random.choice(palabras)
-            print("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tPalabra generada:", palabragenerada)
     # Retorna la palabra o número generado
     return palabragenerada
 
@@ -259,14 +257,17 @@ def opcion3():
 
                 intentos.append(numusuario)  # Agrega la combinación propuesta a la lista de intentos
                 pistas.append(salida)  # Agrega la pista correspondiente a la lista de pistas
-
                 print()
                 print(f'\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\033[4mPropuesto\033[0m\t\t\t\t\033[4mResultado\033[0m')
                 for a in range(len(intentos)):
                     b = intentos[a]
                     c = pistas[a]
-                    print(f"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t{b}\t\t\t\t\t{c}")
-
+                    if juego == "N":
+                        print(f"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t{b}\t\t\t\t\t{c}")
+                    elif juego == "L":
+                        print(f"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t{b}\t\t\t\t{c}")
+                    else:
+                        print("Revise si a seleccionado una opcion")
                 vidas += 1 #Añade 1 al contador de intentos
                 # Verifica si la combinación propuesta es igual a la combinación generada
                 if salida == cerrando:
