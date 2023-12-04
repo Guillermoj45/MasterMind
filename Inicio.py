@@ -294,9 +294,9 @@ def posicion (timeuser, combinacionuser, fechauser, intetosuser, nombreuser):
         intentos = b.get("intentos")
         nombre = b.get("nombre")
         if tiempo == timeuser and combinacion == combinacionuser and intentos == intetosuser:
-            return a
+            return a+1
 
-def PDF():
+def PDF(nombre):
     c = canvas.Canvas("partidas.pdf", pagesize=letter)
 
     # Cargar la imagen y obtener sus dimensiones
@@ -314,12 +314,11 @@ def PDF():
     c.drawString(180, 550, "INFORMES DE LAS PARTIDA")
     c.setFont("Helvetica", 12)
     data = sacar_datos_txt()
-    c.drawString(60, 507, f"El jugador pedro ha jugado las siguientes partidas {len(data)} partidas:")
-    # Guardar el PDF
+    fecha, repeticiones, combinacion, intentosmin, tiempomin, conseguido = la_mejor_txt()
+    posicion1 = posicion(tiempomin, combinacion, fecha, intentosmin, nombre)
+    c.drawString(60, 507, f"El jugador {nombre} ha jugado las siguientes partidas {len(data)} partidas:")
 
     # Creamos la tabla
-    nombre = "paco"
-
     data.insert(0, ["Fecha", "Número", "Conbinación", "Intentos", "Tiempo(secs)", "Conseguido"])
     col_widths = [85, 85, 85, 85, 85, 85]
     tabla = Table(data, col_widths)
@@ -335,10 +334,8 @@ def PDF():
     tabla.wrapOn(c, 0, 0)
     tabla.drawOn(c, 50, 430)
 
-    fecha, repeticiones, combinacion, intentosmin, tiempomin, conseguido = la_mejor_txt()
     c.drawString(60, 310, 'Su mejor partida ha sido:')
     c.drawString(60, 295, f"{fecha} --- {repeticiones} --- {combinacion} --- {intentosmin} --- {tiempomin} --- {'True' if conseguido else 'False'}")
-    posicion1 = posicion(tiempomin, combinacion, fecha, intentosmin, nombre)
     c.drawString(60, 280, f'Actualmente {nombre} ocupraía la {posicion1} de nuestro ranking')
     c.save()
 
@@ -378,7 +375,7 @@ while not salir:
         input("Volver al menú...")
 
     elif opcion == 5:
-        PDF()
+        PDF(nombre)
 
     elif opcion == 6:
         salir = True
