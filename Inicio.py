@@ -273,7 +273,7 @@ def opcion3():
                     conseguido = True
                     print(f"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t¡En {vidas} intentos!")
                     # Verifica si se han agotado los intentos
-                if vidas == tipo:
+                elif vidas == tipo:
                     cierre = False
                     print("\n\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t¡Has agotado los intentos!"
                           "\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tCombinación no descubierta"
