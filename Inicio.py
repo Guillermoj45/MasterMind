@@ -1,4 +1,3 @@
-import math
 import random
 import cv2
 from stegano import lsb
@@ -9,13 +8,8 @@ import pandas as pd
 from reportlab.pdfgen import canvas
 from reportlab.lib import utils, colors
 from reportlab.lib.styles import getSampleStyleSheet
-import itertools
-from random import randint
-from statistics import mean
-from reportlab.lib.pagesizes import A4
-from reportlab.lib import colors
 from reportlab.lib.pagesizes import letter
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
+from reportlab.platypus import Table, TableStyle
 
 
 def opcion1():
@@ -135,7 +129,7 @@ def ranksave(nombre):
             for a in range(len(partidas)):
                 b = partidas[a]
                 intentoslist = b.get("intentos")
-                if intentos < intentoslist:
+                if intentosmin < intentoslist:
                     partidas.insert(a, dataplay)
                     break
                 elif intentosmin == intentoslist:
@@ -279,20 +273,14 @@ def sacar_datos_txt():
     intentos = []
     tiempo = []
     conseguido = []
+    todaspartidas = []
     partidas = registro.split("\n")
     for a in range(len(partidas)):
         if partidas[a] != "":
             partida = partidas[a]
             datos1 = partida.split("#")
-            datos1[3] = int(datos1[3])
-            datos1[4] = float(datos1[4])
-            fecha.append(datos1[0])
-            repeticiones.append(datos1[1])
-            combinacion.append(datos1[2])
-            intentos.append(datos1[3])
-            tiempo.append(datos1[4])
-            conseguido.append(datos1[5])
-    return fecha, repeticiones, combinacion, intentos, tiempo, conseguido
+            todaspartidas.append(datos1)
+    return todaspartidas
 
 def posicion (timeuser, combinacionuser, fechauser, intetosuser, nombreuser):
     archivo = open("ranking.dat", "rb")
@@ -305,15 +293,14 @@ def posicion (timeuser, combinacionuser, fechauser, intetosuser, nombreuser):
         fecha = b.get("fecha")
         intentos = b.get("intentos")
         nombre = b.get("nombre")
-        if tiempo == timeuser and combinacion == combinacionuser and fecha == fechauser and intentos == intetosuser and nombre == nombreuser:
-            return a+1
+        if tiempo == timeuser and combinacion == combinacionuser and intentos == intetosuser:
+            return a
 
 def PDF():
     c = canvas.Canvas("partidas.pdf", pagesize=letter)
 
     # Cargar la imagen y obtener sus dimensiones
     img = utils.ImageReader("fotoconlogo.png")
-    data = sacar_datos_txt()
     # Escalar la imagen según las dimensiones proporcionadas
     c.drawImage(img, 160, 580, 300, 180)
     primer = getSampleStyleSheet()
@@ -326,40 +313,27 @@ def PDF():
     c.setFillColor(colors.black)
     c.drawString(180, 550, "INFORMES DE LAS PARTIDA")
     c.setFont("Helvetica", 12)
-    c.drawString(60, 530, f"El jugador pedro ha jugado las siguientes partidas {len(data[1])} partidas:")
+    data = sacar_datos_txt()
+    c.drawString(60, 507, f"El jugador pedro ha jugado las siguientes partidas {len(data)} partidas:")
     # Guardar el PDF
 
     # Creamos la tabla
-    w, h = A4
-    max_rows_per_page = 6
+    nombre = "paco"
 
-    Eje_x = 50
-    Eje_y = 330
-
-    separacion = 15
-    fecha, repeticiones, combinaciones, intentos, tiempo, conseguido = data
-    xlist = [x + Eje_x for x in [0, 100, 180, 260, 310, 400, 480]]
-    ylist = [h - Eje_y - i * separacion for i in range(max_rows_per_page + 1)]
-
-    # Agregar encabezados
-    headers = ["Fecha", "Repeticiones", "Combinación", "Intentos", "Tiempo(secs)", "Conseguido"]
-
-    for x, header in zip(xlist, headers):
-        c.drawString(x + 2, ylist[0] - separacion + 3, header)
-
-    # Incrementar el índice de y para comenzar con los datos
-    y_index = 1
-    for row in zip(fecha, repeticiones, combinaciones, intentos, tiempo, conseguido):
-        c.grid(xlist, ylist[:2])
-        for x, cell in zip(xlist, row):
-            c.drawString(x + 2, ylist[y_index] - separacion + 3, str(cell))
-        y_index += 1
-
-        # Si alcanza el límite de filas por página, mostrar la siguiente página
-        if y_index == max_rows_per_page:
-            c.showPage()
-            c.drawString(x + 2, ylist[y_index] - separacion + 3, str(cell))
-            y_index = 0
+    data.insert(0, ["Fecha", "Número", "Conbinación", "Intentos", "Tiempo(secs)", "Conseguido"])
+    col_widths = [85, 85, 85, 85, 85, 85]
+    tabla = Table(data, col_widths)
+    styletable = TableStyle([
+    ('GRID', (0, 0), (-1, -1), 1, colors.black),
+    ('BACKGROUND', (0, 0), (-1, 0), colors.white),
+    ('TEXTCOLOR', (0, 0), (-1, 0), colors.blue),
+    ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+    ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+    ('TEXTCOLOR', (0, 1), (-1, -1), colors.orange),
+    ])
+    tabla.setStyle(styletable)
+    tabla.wrapOn(c, 0, 0)
+    tabla.drawOn(c, 50, 430)
 
     fecha, repeticiones, combinacion, intentosmin, tiempomin, conseguido = la_mejor_txt()
     c.drawString(60, 310, 'Su mejor partida ha sido:')
@@ -387,23 +361,24 @@ while not salir:
         print(f'\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOpción: {opcion}\n')
         opcion1()
 
+
     elif opcion == 2:
         print(f'\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOpción: {opcion}\n')
         juego = opcion2()
-        input()
+        input("Volver al menú...")
 
     elif opcion == 3:
         print(f'\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOpción: {opcion}\n')
         nombre = opcion3()
-        input()
+        input("Volver al menú...")
 
     elif opcion == 4:
         print(f'\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOpción: {opcion}\n')
         Rankins()
-        input()
+        input("Volver al menú...")
 
     elif opcion == 5:
         PDF()
 
     elif opcion == 6:
-        print(sacar_datos_txt())
+        salir = True
