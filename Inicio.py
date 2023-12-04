@@ -61,6 +61,7 @@ def mostrar():
 
 
 def aleatorio(juego):
+
     if juego == 'N':
         # Si el juego es de números, genera un número aleatorio de 5 dígitos
         palabragenerada = str(random.randint(10000, 99999))
@@ -218,6 +219,7 @@ def opcion3():
     else:
         tipo = 7 #Determina el número de intentos para L
         menerror = "!INTRODUZCA 8 LETRAS¡"
+
     print('\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\033[1mAPLICACIÓN MASTERMIND\033[0m')
     print('\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tSe ha recuperado la combinación')
     nombre = input('\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tTu nickname, por favor: ')
@@ -381,7 +383,7 @@ def PDF(nombre):
     ])
     tabla.setStyle(styletable)
     tabla.wrapOn(c, 0, 0) # Tamaño de la tabla
-    tabla.drawOn(c, 50, 430) # Posición de la tabla
+    tabla.drawOn(c, 50, 350) # Posición de la tabla
 
     c.drawString(60, 310, 'Su mejor partida ha sido:')
     c.drawString(60, 295, f"{fecha} --- {repeticiones} --- {combinacion} --- {intentosmin} --- {tiempomin} --- {'True' if conseguido else 'False'}")
@@ -426,7 +428,8 @@ while not salir:
         input("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tVolver al menú...")
 
     elif opcion == 5:
+        print(f'\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOpción: {opcion}\n')
         PDF(nombre)
-
+        input("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tVolver al menú...")
     elif opcion == 6:
         salir = True
