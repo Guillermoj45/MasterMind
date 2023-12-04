@@ -14,7 +14,7 @@ from reportlab.platypus import Table, TableStyle
 
 def opcion1():
     # Lee la imagen desde el archivo 'mastermind_logorigin.png'
-    img = cv2.imread('mastermind_logorigin.png')
+    img = cv2.imread('IMG/mastermind_logorigin.png')
 
     # Define los parámetros para el primer conjunto de texto
     texto = "Equipo 1"
@@ -42,20 +42,20 @@ def opcion1():
     cv2.imshow("Imagen con Texto", img)
     cv2.waitKey(0)
     # Guarda la imagen con el texto añadido como 'fotoconlogo.png'
-    cv2.imwrite("fotoconlogo.png", img)
+    cv2.imwrite("IMG/fotoconlogo.png", img)
     cv2.destroyAllWindows()
 
 
 def esconder(palabragenerada):
     # Utiliza la función hide de la biblioteca stegano para ocultar la palabra generada en la imagen
-    fotosecret = lsb.hide("mastermind_logorigin.png", palabragenerada)
+    fotosecret = lsb.hide("IMG/mastermind_logorigin.png", palabragenerada)
     # Utiliza la función hide de la biblioteca stegano para ocultar la palabra generada en la imagen
-    fotosecret.save("Mastermind_secreto.png")
+    fotosecret.save("IMG/Mastermind_secreto.png")
 
 
 def mostrar():
     # Utiliza la función reveal de la biblioteca stegano para revelar la información oculta en la imagen
-    palabramostra = lsb.reveal("Mastermind_secreto.png")
+    palabramostra = lsb.reveal("IMG/Mastermind_secreto.png")
     # Retorna la información revelada (en este caso, la palabra oculta)
     return palabramostra
 
@@ -349,7 +349,7 @@ def PDF(nombre):
     c = canvas.Canvas("partidas.pdf", pagesize=letter)
 
     # Cargar la imagen y obtener sus dimensiones
-    img = utils.ImageReader("fotoconlogo.png")
+    img = utils.ImageReader("IMG/fotoconlogo.png")
     data = sacar_datos_txt()
     # Escalar la imagen según las dimensiones proporcionadas
     c.drawImage(img, 160, 580, 300, 180)
