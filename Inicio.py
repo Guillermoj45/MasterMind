@@ -342,6 +342,7 @@ def posicion (timeuser, combinacionuser, fechauser, intetosuser, nombreuser):
             return a+1
 
 def PDF(nombre):
+    # Creamos el PDF
     c = canvas.Canvas("partidas.pdf", pagesize=letter)
 
     # Cargar la imagen y obtener sus dimensiones
@@ -349,6 +350,7 @@ def PDF(nombre):
     data = sacar_datos_txt()
     # Escalar la imagen según las dimensiones proporcionadas
     c.drawImage(img, 160, 580, 300, 180)
+    #Aplicamos negrita a un párrafo y le metemos un fondo gris al título
     primer = getSampleStyleSheet()
     negrita = primer['BodyText']
     negrita.fontName = "Helvetica-Bold"
@@ -365,6 +367,7 @@ def PDF(nombre):
     c.drawString(60, 507, f"El jugador {nombre} ha jugado las siguientes partidas {len(data)} partidas:")
 
     # Creamos la tabla
+    # Tipos de datos de la tabla
     data.insert(0, ["Fecha", "Número", "Conbinación", "Intentos", "Tiempo(secs)", "Conseguido"])
     col_widths = [85, 85, 85, 85, 85, 85]
     tabla = Table(data, col_widths)
@@ -377,12 +380,15 @@ def PDF(nombre):
     ('TEXTCOLOR', (0, 1), (-1, -1), colors.orange),
     ])
     tabla.setStyle(styletable)
-    tabla.wrapOn(c, 0, 0)
-    tabla.drawOn(c, 50, 430)
+    tabla.wrapOn(c, 0, 0) # Tamaño de la tabla
+    tabla.drawOn(c, 50, 430) # Posición de la tabla
 
     c.drawString(60, 310, 'Su mejor partida ha sido:')
     c.drawString(60, 295, f"{fecha} --- {repeticiones} --- {combinacion} --- {intentosmin} --- {tiempomin} --- {'True' if conseguido else 'False'}")
-    c.drawString(60, 280, f'Actualmente {nombre} ocupraía la {posicion1} de nuestro ranking')
+    if posicion1 is not None and (int(posicion1) <= 10 or posicion1 == 0): #Condición de que si no esta en el ranking muestre una cosa y si esta otra
+        c.drawString(60, 280, f'Actualmente {nombre} ocuparía la {posicion1} de nuestro ranking')
+    else:
+        c.drawString(60, 280, f'No pudo ocupar posición en nuestro ranking')
     c.save()
 
 
@@ -407,17 +413,17 @@ while not salir:
     elif opcion == 2:
         print(f'\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOpción: {opcion}\n')
         juego = opcion2()
-        input("Volver al menú...")
+        input("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tVolver al menú...")
 
     elif opcion == 3:
         print(f'\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOpción: {opcion}\n')
         nombre = opcion3()
-        input("Volver al menú...")
+        input("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tVolver al menú...")
 
     elif opcion == 4:
         print(f'\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOpción: {opcion}\n')
         Rankins()
-        input("Volver al menú...")
+        input("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tVolver al menú...")
 
     elif opcion == 5:
         PDF(nombre)
